@@ -8,8 +8,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 public class Manager {
-    private String name;
     private Integer id;
-    private String contactNumber;
+    private String name;
     private String email;
+    private String contactNumber;
 }

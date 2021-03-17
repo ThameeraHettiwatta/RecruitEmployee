@@ -1,5 +1,6 @@
 package com.example.RecruitEmployee.employee;
 
+import com.example.RecruitEmployee.project.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Employee {
-    private String empName;
     private Integer empId;
+    private String empName;
     private Long empSalary;
+    private Project project;
     private String empEmail;
+
 }

@@ -1,11 +1,13 @@
 package com.example.RecruitEmployee.employee;
 
+import com.example.RecruitEmployee.project.Project;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeTest {
-    private Employee emp = new Employee("Emp1", 1, 1000L, "emp1@gmail.com");
+    private Project project = new Project();
+    private Employee emp = new Employee(1,"Emp1",  1000L,project,"emp1@gmail.com");
 
     @Test
     void setEmpName() {
