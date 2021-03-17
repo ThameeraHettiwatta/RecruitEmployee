@@ -12,7 +12,7 @@ public class Employee {
     private Integer empId;
     private String empName;
     private Long empSalary;
-    private Project project;
+    private Integer projectId;
     private String empEmail;
 
 }

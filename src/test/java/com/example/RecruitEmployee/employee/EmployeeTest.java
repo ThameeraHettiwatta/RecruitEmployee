@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeTest {
-    private Project project = new Project();
-    private Employee emp = new Employee(1,"Emp1",  1000L,project,"emp1@gmail.com");
+    private Employee emp = new Employee(1,"Emp1",  1000L, 1,"emp1@gmail.com");
 
     @Test
     void setEmpName() {

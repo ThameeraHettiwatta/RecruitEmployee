@@ -31,7 +31,7 @@ CREATE TABLE `Employee` (
   PRIMARY KEY (`emp_id`),
   KEY `project_id_idx` (`project_id`),
   CONSTRAINT `project_id` FOREIGN KEY (`project_id`) REFERENCES `Project` (`project_id`) ON DELETE NO ACTION ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `Employee` (
 
 LOCK TABLES `Employee` WRITE;
 /*!40000 ALTER TABLE `Employee` DISABLE KEYS */;
-INSERT INTO `Employee` VALUES (2,'emp2','1200',1,'emp2@gmail.com');
+INSERT INTO `Employee` VALUES (2,'emp4','1300',1,'emp4@gmail.com'),(3,'emp3','1340',1,'emp3@gmail.com');
 /*!40000 ALTER TABLE `Employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +57,7 @@ CREATE TABLE `Project` (
   `project_location` varchar(45) DEFAULT NULL,
   `manager_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,33 +66,34 @@ CREATE TABLE `Project` (
 
 LOCK TABLES `Project` WRITE;
 /*!40000 ALTER TABLE `Project` DISABLE KEYS */;
-INSERT INTO `Project` VALUES (1,'project1','location1',NULL);
+INSERT INTO `Project` VALUES (1,'project1','location1',1),(2,'project2','location2',1),(3,'project3','location3',1);
 /*!40000 ALTER TABLE `Project` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `Project Manager`
+-- Table structure for table `ProjectManager`
 --
 
-DROP TABLE IF EXISTS `Project Manager`;
+DROP TABLE IF EXISTS `ProjectManager`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `Project Manager` (
+CREATE TABLE `ProjectManager` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
   `contact_number` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Project Manager`
+-- Dumping data for table `ProjectManager`
 --
 
-LOCK TABLES `Project Manager` WRITE;
-/*!40000 ALTER TABLE `Project Manager` DISABLE KEYS */;
-/*!40000 ALTER TABLE `Project Manager` ENABLE KEYS */;
+LOCK TABLES `ProjectManager` WRITE;
+/*!40000 ALTER TABLE `ProjectManager` DISABLE KEYS */;
+INSERT INTO `ProjectManager` VALUES (1,'emp1','emp1@gmail.com','071890223');
+/*!40000 ALTER TABLE `ProjectManager` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -104,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-17 14:52:42
+-- Dump completed on 2021-03-17 18:19:42

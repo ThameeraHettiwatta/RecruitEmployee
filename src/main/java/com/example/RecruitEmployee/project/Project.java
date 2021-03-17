@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Getter
 @Setter
 public class Project {
     private  Integer projectId;
     private String projectName;
     private String projectLocation;
-    private Manager manager;
+    private Integer managerId;
 }
