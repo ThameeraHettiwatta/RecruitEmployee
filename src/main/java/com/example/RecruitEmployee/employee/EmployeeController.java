@@ -1,5 +1,6 @@
 package com.example.RecruitEmployee.employee;
 
+import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
 import com.example.RecruitEmployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,22 +34,22 @@ public class EmployeeController {
 
     @GetMapping(path = "{empId}")
     public Employee getEmployeeById(@PathVariable("empId") Integer empId) {
-        return employeeService.getEmployeeById(empId);
+        return employeeService.getEmployeeById(empId).orElseThrow(()-> new ApiRequestException("User not found with empId:" +empId));
     }
 
     @PostMapping
-    public void addEmployee(@NonNull @RequestBody Employee employee){
-        employeeService.addEmployee(employee);
+    public int addEmployee(@NonNull @RequestBody Employee employee){
+        return employeeService.addEmployee(employee);
     }
 
     @PutMapping(path = "{empId}")
-    public void updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee){
-        employeeService.updateEmployee(empId, employee);
+    public int updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee){
+        return employeeService.updateEmployee(empId, employee);
     }
 
     @DeleteMapping(path = "{empId}")
-    public void deleteEmployee(@PathVariable("empId") Integer empId){
-        employeeService.deleteEmployee(empId);
+    public int deleteEmployee(@PathVariable("empId") Integer empId){
+        return employeeService.deleteEmployee(empId);
     }
 
     @GetMapping(path = "{projectId}/employees")

@@ -3,16 +3,19 @@ package com.example.RecruitEmployee.service;
 import com.example.RecruitEmployee.employee.Employee;
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EmployeeService {
 
     private final EmployeeMapper employeeMapper;
 
-    public EmployeeService(EmployeeMapper employeeMapper) {
+    @Autowired
+    public EmployeeService(@Qualifier("EmployeeMapper") EmployeeMapper employeeMapper) {
         this.employeeMapper = employeeMapper;
     }
 
@@ -20,20 +23,20 @@ public class EmployeeService {
         return employeeMapper.getAllEmployee();
     }
 
-    public Employee getEmployeeById(Integer empId) {
+    public Optional <Employee> getEmployeeById(Integer empId) {
         return employeeMapper.getEmployeeById(empId);
     }
 
-    public void addEmployee(Employee employee) {
-        employeeMapper.addEmployee(employee);
+    public int addEmployee(Employee employee) {
+        return employeeMapper.addEmployee(employee);
     }
 
-    public void updateEmployee(Integer empId, Employee employee) {
-        employeeMapper.updateEmployee(empId, employee);
+    public int updateEmployee(Integer empId, Employee employee) {
+        return employeeMapper.updateEmployee(empId, employee);
     }
 
-    public void deleteEmployee(Integer empId) {
-        employeeMapper.deleteEmployee(empId);
+    public int deleteEmployee(Integer empId) {
+        return employeeMapper.deleteEmployee(empId);
     }
 
     public List<Employee> getEmployeeByProjectId(Integer projectId) {

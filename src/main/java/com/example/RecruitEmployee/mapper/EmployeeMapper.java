@@ -2,10 +2,14 @@ package com.example.RecruitEmployee.mapper;
 
 import com.example.RecruitEmployee.employee.Employee;
 import org.apache.ibatis.annotations.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
+@Qualifier("EmployeeMapper")
 public interface EmployeeMapper {
 
     @Select("SELECT * FROM Employee")
@@ -20,17 +24,17 @@ public interface EmployeeMapper {
     List<Employee> getAllEmployee();
 
     @Select("SELECT * FROM Employee WHERE emp_id = #{empId}")
-    Employee getEmployeeById(Integer empId);
+    Optional<Employee> getEmployeeById(Integer empId);
 
     @Insert("INSERT INTO Employee(emp_id, emp_name, emp_salary, project_id, emp_email) VALUES(#{empId}, #{empName}, #{empSalary}, #{projectId}, #{empEmail})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "empId", before = false, resultType = Integer.class)
-    void addEmployee(Employee employee);
+    int addEmployee(Employee employee);
 
     @Update("UPDATE Employee SET emp_name=#{employee.empName}, emp_salary=#{employee.empSalary}, project_id=#{employee.projectId}, emp_email=#{employee.empEmail} WHERE emp_id=#{empId}")
-    void updateEmployee(Integer empId, Employee employee);
+    int updateEmployee(Integer empId, Employee employee);
 
     @Delete("DELETE FROM Employee WHERE emp_id=#{empId}")
-    void deleteEmployee(Integer empId);
+    int deleteEmployee(Integer empId);
 
     @Select("SELECT * FROM Employee WHERE project_id=#{projectId}")
     List<Employee> getEmployeeByProjectId(Integer projectId);

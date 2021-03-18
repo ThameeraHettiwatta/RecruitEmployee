@@ -21,4 +21,6 @@ public interface ProjectMapper {
 
     @Insert("INSERT INTO Project(project_id, project_name, project_location, manager_id) VALUES(#{projectId}, #{projectName}, #{projectLocation}, #{managerId})")
     void addProject(Project project);
+    
+
 }
