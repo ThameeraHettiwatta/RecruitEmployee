@@ -1,6 +1,7 @@
 package com.example.RecruitEmployee.employee;
 
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
+import com.example.RecruitEmployee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -8,43 +9,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeMapper employeeMapper;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeMapper employeeMapper) {
-        this.employeeMapper = employeeMapper;
+    @Autowired
+    public EmployeeController(EmployeeService employeeService){
+        this.employeeService = employeeService;
     }
 
+//    private final EmployeeMapper employeeMapper;
+//
+//    public EmployeeController(EmployeeMapper employeeMapper) {
+//        this.employeeMapper = employeeMapper;
+//    }
 
-    @GetMapping("/getAllEmployee")
+
+    @GetMapping
     public List<Employee> getAllEmployee(){
-        return employeeMapper.getAllEmployee();
+        return employeeService.getAllEmployee();
     }
 
-    @GetMapping("/getEmployee/{id}")
-    public Employee getEmployeeById(@PathVariable("id") Integer id) {
-        return employeeMapper.getEmployeeById(id);
+    @GetMapping(path = "{empId}")
+    public Employee getEmployeeById(@PathVariable("empId") Integer empId) {
+        return employeeService.getEmployeeById(empId);
     }
 
-    @PostMapping("/addEmployee")
+    @PostMapping
     public void addEmployee(@NonNull @RequestBody Employee employee){
-        employeeMapper.addEmployee(employee);
-    }
-    @PutMapping("/updateEmployee")
-    public void updateEmployee(@NonNull @RequestBody Employee employee){
-        employeeMapper.updateEmployee(employee);
+        employeeService.addEmployee(employee);
     }
 
-    @DeleteMapping("/deleteEmployee/{id}")
-    public void deleteEmployee(@PathVariable("id") Integer id){
-        employeeMapper.deleteEmployee(id);
+    @PutMapping(path = "{empId}")
+    public void updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee){
+        employeeService.updateEmployee(empId, employee);
     }
 
-    @GetMapping("/{projectId}/allEmployee")
+    @DeleteMapping(path = "{empId}")
+    public void deleteEmployee(@PathVariable("empId") Integer empId){
+        employeeService.deleteEmployee(empId);
+    }
+
+    @GetMapping(path = "{projectId}/employees")
     public List<Employee> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId){
-        return employeeMapper.getEmployeeByProjectId(projectId);
+        return employeeService.getEmployeeByProjectId(projectId);
     }
 
 }

@@ -26,8 +26,8 @@ public interface EmployeeMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "empId", before = false, resultType = Integer.class)
     void addEmployee(Employee employee);
 
-    @Update("UPDATE Employee SET emp_name=#{empName}, emp_salary=#{empSalary}, project_id=#{projectId}, emp_email=#{empEmail}")
-    void updateEmployee(Employee employee);
+    @Update("UPDATE Employee SET emp_name=#{empName}, emp_salary=#{empSalary}, project_id=#{projectId}, emp_email=#{empEmail} WHERE emp_id=#{empId}")
+    void updateEmployee(Integer empId, Employee employee);
 
     @Delete("DELETE FROM Employee WHERE emp_id=#{empId}")
     void deleteEmployee(Integer empId);
