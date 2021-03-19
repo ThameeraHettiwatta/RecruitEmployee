@@ -1,11 +1,10 @@
 package com.example.RecruitEmployee.employee;
 
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +20,7 @@ public class EmployeeService {
         this.employeeMapper = employeeMapper;
     }
 
-    public List<Employee> getAllEmployee(){
+    public List<Employee> getAllEmployee() {
         return employeeMapper.getAllEmployee();
     }
 
@@ -45,9 +44,9 @@ public class EmployeeService {
         return employeeMapper.getEmployeeByProjectId(projectId);
     }
 
-    public List<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
-        Pageable paging = PageRequest.of(pageNo, pageSize);
-        Page<Employee> pagedResult = employeeMapper.findAll(paging);
-        return pagedResult.toList();
+    public PageInfo<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Employee> pagedResult = employeeMapper.getPaginatedEmployee();
+        return new PageInfo<Employee>(pagedResult);
     }
 }

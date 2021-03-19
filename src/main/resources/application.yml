@@ -4,3 +4,9 @@ spring:
     url: jdbc:mysql://localhost:3306/recruit_employee
     username: root
     password: admin123
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  params: count=countSql
+  supportMethodsArguments: true

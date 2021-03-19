@@ -3,17 +3,13 @@ package com.example.RecruitEmployee.mapper;
 import com.example.RecruitEmployee.employee.Employee;
 import org.apache.ibatis.annotations.*;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Mapper
 @Qualifier("EmployeeMapper")
-public interface EmployeeMapper extends PagingAndSortingRepository<Employee, Integer> {
+public interface EmployeeMapper {
 
     @Select("SELECT * FROM Employee")
 //    @Results({
@@ -43,5 +39,6 @@ public interface EmployeeMapper extends PagingAndSortingRepository<Employee, Int
     List<Employee> getEmployeeByProjectId(Integer projectId);
 
     @Select("SELECT * FROM Employee")
-    Page<Employee> getPaginatedEmployee(Pageable paging);
+    List<Employee> getPaginatedEmployee();
+   
 }
