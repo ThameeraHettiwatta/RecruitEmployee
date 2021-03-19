@@ -2,7 +2,7 @@ package com.example.RecruitEmployee.employee;
 
 import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
-import com.example.RecruitEmployee.service.EmployeeService;
+import com.example.RecruitEmployee.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,11 @@ public class EmployeeController {
     @GetMapping
     public List<Employee> getAllEmployee(){
         return employeeService.getAllEmployee();
+    }
+
+    @GetMapping(path = "{pageNo}/{pageSize}")
+    public List<Employee> getPaginatedEmployee(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize){
+        return employeeService.getPaginatedEmployee(pageNo, pageSize);
     }
 
     @GetMapping(path = "{empId}")
