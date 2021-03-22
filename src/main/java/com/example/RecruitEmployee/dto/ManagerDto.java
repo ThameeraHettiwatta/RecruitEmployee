@@ -1,16 +1,11 @@
-package com.example.RecruitEmployee.manager;
+package com.example.RecruitEmployee.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-
 @Getter
-@AllArgsConstructor
 @Setter
-@Entity
-public class Manager {
+public class ManagerDto {
     private Integer managerId;
     private String managerName;
     private String managerEmail;
