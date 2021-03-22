@@ -2,8 +2,6 @@ package com.example.RecruitEmployee.employee;
 
 import com.example.RecruitEmployee.dto.EmployeeDto;
 import com.example.RecruitEmployee.exception.ApiRequestException;
-import com.example.RecruitEmployee.mapper.EmployeeMapper;
-import com.example.RecruitEmployee.employee.EmployeeService;
 import com.github.pagehelper.PageInfo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +16,12 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeService employeeService, ModelMapper modelMapper) {
         this.employeeService = employeeService;
+        this.modelMapper = modelMapper;
     }
 
 //    private final EmployeeMapper employeeMapper;
@@ -65,17 +63,16 @@ public class EmployeeController {
 
     @GetMapping(path = "{projectId}/employees")
     public List<Employee> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId) {
+//        return employeeService.getEmployeeByProjectId(projectId).orElseThrow(() -> new ApiRequestException("Employee not found with projectId:" + projectId));
         return employeeService.getEmployeeByProjectId(projectId);
     }
 
     private EmployeeDto convertToDto(Employee employee){
-        EmployeeDto employeeDto = modelMapper.map(employee, EmployeeDto.class);
-        return employeeDto;
+        return modelMapper.map(employee, EmployeeDto.class);
     }
 
     private Employee convertToEntity(EmployeeDto employeeDto){
-        Employee employee = modelMapper.map(employeeDto, Employee.class);
-        return employee;
+        return modelMapper.map(employeeDto, Employee.class);
     }
 
 }

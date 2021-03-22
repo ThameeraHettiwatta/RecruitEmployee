@@ -38,7 +38,7 @@ public interface EmployeeMapper {
     @Select("SELECT * FROM Employee WHERE project_id=#{projectId}")
     List<Employee> getEmployeeByProjectId(Integer projectId);
 
-    @Select("SELECT * FROM Employee")
-    List<Employee> getPaginatedEmployee();
+//    @Select("SELECT * FROM Employee")
+//    List<Employee> getPaginatedEmployee();
    
 }

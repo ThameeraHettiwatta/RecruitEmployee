@@ -46,7 +46,7 @@ public class EmployeeService {
 
     public PageInfo<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo, pageSize);
-        List<Employee> pagedResult = employeeMapper.getPaginatedEmployee();
+        List<Employee> pagedResult = employeeMapper.getAllEmployee();
         return new PageInfo<Employee>(pagedResult);
     }
 }
