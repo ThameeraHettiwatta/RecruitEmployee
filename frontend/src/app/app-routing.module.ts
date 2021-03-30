@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-// import {allEmployees} from './modules/employee/all-employees/all-employees.component'
+import {AllEmployeesComponent} from './modules/employee/all-employees/all-employees.component'
 
 const routes: Routes = [
-  // {
-  //   path: "employee",
-  //   component: allEmployees
-  // }
+  {
+    path: "employee",
+    component: AllEmployeesComponent
+  }
 ];
 
 @NgModule({
@@ -14,3 +14,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+export const routingComponents = [AllEmployeesComponent]
