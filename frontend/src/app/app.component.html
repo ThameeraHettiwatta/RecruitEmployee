@@ -1,1 +1,24 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <!--    <button mat-icon-button>-->
+        <!--      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>-->
+        <!--      <mat-icon>menu</mat-icon>-->
+        <!--    </button>-->
+        <button mat-button [routerLink]="'/'">
+            <h1>Recruit Employee</h1>
+        </button>
+        <span class="menu-spacer"></span>
+        <div>
+            <a mat-button [routerLink]="'/employee'"> Employee </a>
+            <!-- <a mat-button [routerLink]="'/addEmployee'"> Create Employee </a> -->
+            <a mat-button [routerLink]="'/project'"> Projects </a>
+            <!-- <a mat-button [routerLink]="'/addProject'"> Create Project </a> -->
+            <a mat-button [routerLink]="'/manager'"> Manage Employee </a>
+        </div>
+    </mat-toolbar-row>
+
+    <mat-toolbar-row>
+        <span style="font-size: 12px;">Employee management application</span>
+    </mat-toolbar-row>
+</mat-toolbar>
 <router-outlet></router-outlet>

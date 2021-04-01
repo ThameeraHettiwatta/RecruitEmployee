@@ -1,0 +1,52 @@
+<section>
+    <div class="example-label"></div>
+    <div class="example-button-row">
+      <button mat-stroked-button color="primary">Create Employee</button>
+      <!-- <button mat-stroked-button color="primary">Primary</button> -->
+    </div>
+  </section>
+
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource">
+
+        <!-- Employee Id Column -->
+        <ng-container matColumnDef="empId">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.empId}} </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="empName">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.empName}} </td>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="empSalary">
+            <th mat-header-cell *matHeaderCellDef> Salary </th>
+            <td mat-cell *matCellDef="let element"> {{element.empSalary}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="projectId">
+            <th mat-header-cell *matHeaderCellDef> Project Id </th>
+            <td mat-cell *matCellDef="let element"> {{element.projectId}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="empEmail">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.empEmail}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
+
+<!--<div *ngFor="let employee of employees">-->
+<!--  <div>{{employee.empName}}</div>-->
+<!--</div>-->
+

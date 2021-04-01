@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AllEmployeesComponent } from './employee/all-employees/all-employees.component';
-import { CreateEmployeeComponent } from './employee/create-employee/create-employee.component';
-import {EmployeeModule} from "./employee/employee.module";
+import { EmployeeComponent } from './employee/employee.component';
+import { ProjectComponent } from './project/project.component';
+import { ManagerComponent } from './manager/manager.component';
 
 
 @NgModule({
   declarations: [
-      // AllEmployeesComponent,
-      // CreateEmployeeComponentZZZ
-  ],
+    EmployeeComponent,
+    ProjectComponent,
+    ManagerComponent],
   imports: [
     CommonModule
-      // EmployeeModule
   ]
 })
 export class ModulesModule { }
