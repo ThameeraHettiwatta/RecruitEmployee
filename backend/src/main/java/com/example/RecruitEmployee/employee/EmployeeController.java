@@ -5,6 +5,8 @@ import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.github.pagehelper.PageInfo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +34,16 @@ public class EmployeeController {
 
 
     @GetMapping
-    public List<Employee> getAllEmployee() {
-        return employeeService.getAllEmployee();
+    public ResponseEntity<List<Employee>> getAllEmployee() {
+        List<Employee> employees = employeeService.getAllEmployee();
+        return new ResponseEntity<>(employees, HttpStatus.OK);
+//        return employeeService.getAllEmployee();
     }
 
     @GetMapping(path = "{pageNo}/{pageSize}")
-    public PageInfo<Employee> getPaginatedEmployee(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize) {
-        return employeeService.getPaginatedEmployee(pageNo, pageSize);
+    public ResponseEntity<PageInfo<Employee>> getPaginatedEmployee(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize) {
+        PageInfo<Employee> pageEmployee = employeeService.getPaginatedEmployee(pageNo, pageSize);
+        return new ResponseEntity<>(pageEmployee, HttpStatus.OK);
     }
 
     @GetMapping(path = "{empId}")
@@ -47,13 +52,15 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public int addEmployee(@NonNull @RequestBody Employee employee) {
-        return employeeService.addEmployee(employee);
+    public ResponseEntity<Integer> addEmployee(@NonNull @RequestBody Employee employee) {
+        int added = employeeService.addEmployee(employee);
+        return new ResponseEntity<>(added, HttpStatus.OK);
     }
 
     @PutMapping(path = "{empId}")
-    public int updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee) {
-        return employeeService.updateEmployee(empId, employee);
+    public ResponseEntity<Integer> updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee) {
+        int updated = employeeService.updateEmployee(empId, employee);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{empId}")

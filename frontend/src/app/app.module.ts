@@ -12,6 +12,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {MatIconModule} from "@angular/material/icon";
 import {MatTableModule} from "@angular/material/table";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     MatIconModule,
     AppRoutingModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
