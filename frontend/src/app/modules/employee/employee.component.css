@@ -10,3 +10,15 @@ table {
 td, th {
     width: 25%;
 }
+
+button {
+    margin: 16px 8px;
+  }
+
+  .mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+  }
+
+  mat-form-field.mat-form-field {
+    width: 100%;
+  }

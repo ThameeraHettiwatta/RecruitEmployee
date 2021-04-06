@@ -16,6 +16,7 @@ export class EmployeeComponent implements OnInit {
   public employees: Employee[];
   public editEmployee: Employee;
   public deleteEmployee: Employee;
+  public searchEmployee: Employee;
 
   constructor(private employeeService: EmployeeService){}
 
@@ -78,6 +79,24 @@ export class EmployeeComponent implements OnInit {
     );
   }
 
+  public onSearchByEmployeeId(employeeId: number): void{
+    this.employeeService.getEmployeeById(employeeId).subscribe(
+      (response: Employee) => {
+        console.log(response);
+        this.dataSource.data = [response];
+        // this.getEmployees();
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
+
   public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
@@ -94,6 +113,10 @@ export class EmployeeComponent implements OnInit {
     if (mode === 'delete') {
       this.deleteEmployee = employee;
       button.setAttribute('data-target', '#deleteEmployeeModal');
+    }
+    if (mode === 'search'){
+      // this.searchEmployee.empId = employee.empId;
+      button.setAttribute('data-target', '#searchEmployeeModal');
     }
     container.appendChild(button);
     button.click();
