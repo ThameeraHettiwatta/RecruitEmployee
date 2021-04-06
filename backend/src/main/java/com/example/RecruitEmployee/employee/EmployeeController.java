@@ -57,9 +57,9 @@ public class EmployeeController {
         return new ResponseEntity<>(added, HttpStatus.OK);
     }
 
-    @PutMapping(path = "{empId}")
-    public ResponseEntity<Integer> updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee) {
-        int updated = employeeService.updateEmployee(empId, employee);
+    @PutMapping
+    public ResponseEntity<Integer> updateEmployee(@NonNull @RequestBody Employee employee) {
+        int updated = employeeService.updateEmployee(employee);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 

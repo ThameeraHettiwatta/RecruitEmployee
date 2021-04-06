@@ -44,9 +44,9 @@ public class ManagerController {
         return managerService.addEmployee(employee);
     }
 
-    @PutMapping(path = "updateEmployee/{empId}")
-    public int updateEmployee(@NonNull @PathVariable("empId") Integer empId, @RequestBody Employee employee) {
-        return managerService.updateEmployee(empId, employee);
+    @PutMapping(path = "updateEmployee")
+    public int updateEmployee(@NonNull @RequestBody Employee employee) {
+        return managerService.updateEmployee(employee);
     }
 
     @DeleteMapping(path = "deleteEmployee/{managerId}")

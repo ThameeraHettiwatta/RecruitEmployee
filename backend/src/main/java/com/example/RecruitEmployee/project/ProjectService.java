@@ -37,8 +37,8 @@ public class ProjectService {
         return projectMapper.addProject(project);
     }
 
-    public int updateProject(Integer projectId, Project project) {
-        return projectMapper.updateProject(projectId, project);
+    public int updateProject(Project project) {
+        return projectMapper.updateProject(project);
     }
 
     public int deleteProject(Integer projectId) {

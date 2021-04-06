@@ -95,6 +95,44 @@
     </div>
 </div>
 
+<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="updateEmployeeModalLabel">Edit Employee {{editEmployee?.empName}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <form #editForm="ngForm">
+               <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" ngModel="{{editEmployee?.empName}}" name="empName" class="form-control" id="empName" aria-describedby="emailHelp" placeholder="Name">
+               </div>
+               <input type="hidden" ngModel="{{editEmployee?.empId}}" name="empId" class="form-control" id="empId" placeholder="Id">
+               <div class="form-group">
+                  <label for="salary">Salary</label>
+                  <input type="number" ngModel="{{editEmployee?.empSalary}}" name="empSalary" class="form-control" id="empSalary" placeholder="Employee Salary">
+               </div>
+               <div class="form-group">
+                  <label for="projectId">Project Id</label>
+                  <input type="text" ngModel="{{editEmployee?.projectId}}" name="projectId" class="form-control" id="projectId" placeholder="Project Id">
+               </div>
+               <div class="form-group">
+                  <label for="email">Email Address</label>
+                  <input type="email" ngModel="{{editEmployee?.empEmail}}" name="empEmail" class="form-control" id="empEmail" placeholder="Employee Email">
+               </div>
+               <div class="modal-footer">
+                  <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                  <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal" class="btn btn-primary" >Save changes</button>
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+ </div>
+
 <div class="modal fade" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
        <div class="modal-content">

@@ -29,8 +29,8 @@ public interface ProjectMapper {
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "projectId", before = false, resultType = Integer.class)
     int addProject(Project project);
 
-    @Update("UPDATE Project SET project_name=#{project.projectName}, project_location=#{project.projectLocation}, manager_id=#{managerId} WHERE project_id=#{projectId}")
-    int updateProject(Integer projectId, Project project);
+    @Update("UPDATE Project SET project_name=#{projectName}, project_location=#{projectLocation}, manager_id=#{managerId} WHERE project_id=#{projectId}")
+    int updateProject(Project project);
 
     @Delete("DELETE FROM Project WHERE project_id=#{projectId}")
     int deleteProject(Integer projectId);

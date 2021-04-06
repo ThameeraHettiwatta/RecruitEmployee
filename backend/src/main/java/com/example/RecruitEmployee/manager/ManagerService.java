@@ -34,8 +34,8 @@ public class ManagerService {
         return employeeMapper.addEmployee(employee);
     }
 
-    public int updateEmployee(Integer empId, Employee employee) {
-        return employeeMapper.updateEmployee(empId, employee);
+    public int updateEmployee(Employee employee) {
+        return employeeMapper.updateEmployee(employee);
     }
 
     public int deleteEmployeeByManagerId(Integer managerId) {

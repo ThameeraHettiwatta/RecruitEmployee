@@ -44,9 +44,9 @@ public class ProjectController {
         return projectService.addProject(project);
     }
 
-    @PutMapping(path = "{projectId}")
-    public int updateProject(@NonNull @PathVariable("projectId") Integer projectId, @RequestBody Project project){
-        return projectService.updateProject(projectId, project);
+    @PutMapping
+    public int updateProject(@NonNull @RequestBody Project project){
+        return projectService.updateProject(project);
     }
 
     @DeleteMapping(path = "{projectId}")

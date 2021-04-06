@@ -16,5 +16,4 @@ public class Employee {
     private Long empSalary;
     private Integer projectId;
     private String empEmail;
-
 }
