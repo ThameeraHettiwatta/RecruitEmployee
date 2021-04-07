@@ -1,1 +1,40 @@
-<p>project works!</p>
+<div class="container" id="main-container">
+    <!-- Table of Employees -->
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="projectId">
+                <th mat-header-cell *matHeaderCellDef> Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectName">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectLocation">
+                <th mat-header-cell *matHeaderCellDef> Project Location </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectLocation}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+             <button mat-icon-button matTooltip="Click to Edit"  class="iconbutton"
+                color="primary">
+                <mat-icon aria-label="Edit">edit</mat-icon>
+             </button>
+             <button mat-icon-button matTooltip="Click to Delete" 
+                class="iconbutton" color="warn">
+                <mat-icon aria-label="Delete">delete</mat-icon>
+             </button>
+          </mat-cell>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+    </div>
+</div>

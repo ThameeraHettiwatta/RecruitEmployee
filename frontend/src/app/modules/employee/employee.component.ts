@@ -1,9 +1,9 @@
-import {Component, OnInit, ViewChild, AfterViewInit} from '@angular/core';
-import {Employee} from "./employee";
-import {EmployeeService} from "../../core/http/employee.service";
-import {HttpErrorResponse} from "@angular/common/http";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Employee } from "./employee";
+import { EmployeeService } from "../../core/http/employee.service";
+import { HttpErrorResponse } from "@angular/common/http";
+import { MatTableDataSource } from "@angular/material/table";
+import { MatPaginator } from "@angular/material/paginator";
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -18,10 +18,13 @@ export class EmployeeComponent implements OnInit {
   public deleteEmployee: Employee;
   public searchEmployee: Employee;
 
-  constructor(private employeeService: EmployeeService){}
+  employeeIdSearchDisabled = true;
+  projectIdSearchDisabled = true;
 
-    displayedColumns: string[] = ['empId', 'empName', 'empSalary', 'projectId', 'empEmail', 'actions'];
-    dataSource = new MatTableDataSource<Employee>();
+  constructor(private employeeService: EmployeeService) { }
+
+  displayedColumns: string[] = ['empId', 'empName', 'empSalary', 'projectId', 'empEmail', 'actions'];
+  dataSource = new MatTableDataSource<Employee>();
 
   ngOnInit() {
     this.getEmployees();
@@ -29,14 +32,14 @@ export class EmployeeComponent implements OnInit {
 
   public getEmployees(): void {
     this.employeeService.getEmployees().subscribe(
-        (response: Employee[]) => {
-          // this.employees = response;
-          // console.log(this.employees);
-          this.dataSource.data = response;
-        },
-        (error: HttpErrorResponse) => {
-          alert(error.message);
-        }
+      (response: Employee[]) => {
+        // this.employees = response;
+        // console.log(this.employees);
+        this.dataSource.data = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
     );
   }
 
@@ -79,23 +82,55 @@ export class EmployeeComponent implements OnInit {
     );
   }
 
-  public onSearchByEmployeeId(employeeId: number): void{
-    this.employeeService.getEmployeeById(employeeId).subscribe(
-      (response: Employee) => {
-        console.log(response);
-        this.dataSource.data = [response];
-        // this.getEmployees();
-      },
-      (error: HttpErrorResponse) => {
-        alert(error.message);
-      }
-    );
+  public onSearchById(employee: Employee): void {
+    console.log(employee.empId);
+    if (employee.empId) {
+      this.employeeService.getEmployeeById(employee.empId).subscribe(
+        (response: Employee) => {
+          console.log(response);
+          this.dataSource.data = [response];
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+    if (employee.projectId) {
+      this.employeeService.getEmployeeByProjectId(employee.projectId).subscribe(
+        (response: Employee[]) => {
+          console.log(response);
+          this.dataSource.data = response;
+        },
+        (error: HttpErrorResponse) => {
+          alert(error.message);
+        }
+      );
+    }
+
   }
 
   // applyFilter(event: Event) {
   //   const filterValue = (event.target as HTMLInputElement).value;
   //   this.dataSource.filter = filterValue.trim().toLowerCase();
   // }
+
+  public toggle(mode: string) {
+    // const button = document.createElement('button');
+    // button.setAttribute('data-target', '#searchEmployeeModal');
+    if (mode === 'empId') {
+      this.employeeIdSearchDisabled = false;
+      this.projectIdSearchDisabled = true;
+    }
+    if (mode === 'projectID') {
+      this.projectIdSearchDisabled = false;
+      this.employeeIdSearchDisabled = true;
+    }
+    if (mode === 'all') {
+      this.projectIdSearchDisabled = true;
+      this.employeeIdSearchDisabled = true;
+      this.getEmployees();
+    }
+  }
 
   public onOpenModal(employee: Employee, mode: string): void {
     const container = document.getElementById('main-container');
@@ -114,19 +149,19 @@ export class EmployeeComponent implements OnInit {
       this.deleteEmployee = employee;
       button.setAttribute('data-target', '#deleteEmployeeModal');
     }
-    if (mode === 'search'){
-      // this.searchEmployee.empId = employee.empId;
-      button.setAttribute('data-target', '#searchEmployeeModal');
-    }
+    // if (mode === 'search'){
+    //   // this.searchEmployee.empId = employee.empId;
+    //   button.setAttribute('data-target', '#searchEmployeeModal');
+    // }
     container.appendChild(button);
     button.click();
   }
 
 
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    ngAfterViewInit() {
-        this.dataSource.paginator = this.paginator;
-    }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
 
 }
