@@ -1,6 +1,6 @@
 export interface Project {
     projectId: number;
-    rojectName: string;
+    projectName: string;
     projectLocation: string;
     managerId: number;
 }

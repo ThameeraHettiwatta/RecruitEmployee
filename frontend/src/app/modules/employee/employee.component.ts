@@ -33,8 +33,6 @@ export class EmployeeComponent implements OnInit {
   public getEmployees(): void {
     this.employeeService.getEmployees().subscribe(
       (response: Employee[]) => {
-        // this.employees = response;
-        // console.log(this.employees);
         this.dataSource.data = response;
       },
       (error: HttpErrorResponse) => {
@@ -115,8 +113,6 @@ export class EmployeeComponent implements OnInit {
   // }
 
   public toggle(mode: string) {
-    // const button = document.createElement('button');
-    // button.setAttribute('data-target', '#searchEmployeeModal');
     if (mode === 'empId') {
       this.employeeIdSearchDisabled = false;
       this.projectIdSearchDisabled = true;
@@ -149,10 +145,6 @@ export class EmployeeComponent implements OnInit {
       this.deleteEmployee = employee;
       button.setAttribute('data-target', '#deleteEmployeeModal');
     }
-    // if (mode === 'search'){
-    //   // this.searchEmployee.empId = employee.empId;
-    //   button.setAttribute('data-target', '#searchEmployeeModal');
-    // }
     container.appendChild(button);
     button.click();
   }
