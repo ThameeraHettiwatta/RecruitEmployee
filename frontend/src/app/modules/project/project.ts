@@ -3,4 +3,5 @@ export interface Project {
     projectName: string;
     projectLocation: string;
     managerId: number;
+    projectCost: number;
 }

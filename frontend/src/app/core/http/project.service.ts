@@ -36,4 +36,8 @@ export class ProjectService {
   public getProjectByManagerId(managerId: number): Observable<Project[]> {
     return this.http.get<Project[]>(`${this.apiServerUrl}/projects/${managerId}/projects`);
   }
+
+  public getProjectCostByProjectId(projectId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiServerUrl}/projects/projectCost/${projectId}`)
+  }
 }

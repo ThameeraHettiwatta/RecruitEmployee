@@ -12,11 +12,11 @@
                 <mat-form-field>
                     <div *ngIf="!projectIdSearchDisabled">
                         <input matInput ngModel placeholder="Search by Project Id" class="form-control" name="projectId"
-                            id="projectId" type="search">
+                            id="projectId" type="number">
                     </div>
                     <div *ngIf="!managerIdSearchDisabled">
                         <input matInput ngModel placeholder="Search by Manager Id" class="form-control" name="managerId"
-                            id="managerId" type="search">
+                            id="managerId" type="number">
                     </div>
                     <button mat-button matSuffix mat-stroked-button aria-label="search" type="submit">
                         <mat-icon>search</mat-icon>
@@ -55,6 +55,11 @@
             <ng-container matColumnDef="managerId">
                 <th mat-header-cell *matHeaderCellDef> Manager Id </th>
                 <td mat-cell *matCellDef="let element"> {{element.managerId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectCost">
+                <th mat-header-cell *matHeaderCellDef> Project Cost </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectCost}} </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">

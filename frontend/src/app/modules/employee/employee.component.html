@@ -12,11 +12,11 @@
             <mat-form-field>
                <div *ngIf="!employeeIdSearchDisabled">
                   <input matInput ngModel placeholder="Search by Employee Id" class="form-control" name="empId"
-                     id="empId" type="search">
+                     id="empId" type="number">
                </div>
                <div *ngIf="!projectIdSearchDisabled">
                   <input matInput ngModel placeholder="Search by Project Id" class="form-control" name="projectId"
-                     id="projectId" type="search">
+                     id="projectId" type="number">
                </div>
                <button mat-button matSuffix mat-stroked-button aria-label="search" type="submit">
                   <mat-icon>search</mat-icon>

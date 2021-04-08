@@ -23,7 +23,7 @@ export class ProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectService) { }
 
-  displayedColumns: string[] = ['projectId', 'projectName', 'projectLocation', 'managerId', 'actions'];
+  displayedColumns: string[] = ['projectId', 'projectName', 'projectLocation', 'managerId', 'projectCost', 'actions'];
   dataSource = new MatTableDataSource<Project>();
 
   ngOnInit(): void {
@@ -31,14 +31,25 @@ export class ProjectComponent implements OnInit {
   }
 
   public getProjects(): void {
+    console.log("a");
     this.projectService.getProjects().subscribe(
       (response: Project[]) => {
+        console.log(response)
+        for (var project of response) {
+          this.projectService.getProjectCostByProjectId(project.projectId).subscribe(
+            (res: number) => {
+              project.projectCost = res;
+              console.log(project.projectId, res, project.projectCost);
+            }
+          );
+        }
         this.dataSource.data = response;
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
       }
     );
+
   }
 
   public onAddProject(addForm: NgForm): void {
@@ -48,6 +59,7 @@ export class ProjectComponent implements OnInit {
         console.log(response);
         this.getProjects();
         addForm.reset();
+        alert("Project added successfully");
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -61,6 +73,7 @@ export class ProjectComponent implements OnInit {
       (response: Project) => {
         console.log(response);
         this.getProjects();
+        alert("Project updated successfully");
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -73,6 +86,7 @@ export class ProjectComponent implements OnInit {
       (response: void) => {
         console.log(response);
         this.getProjects();
+        alert("Delete Project successful");
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -89,7 +103,8 @@ export class ProjectComponent implements OnInit {
           this.dataSource.data = [response];
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          // alert(error.message);
+          alert("No such Project with project id: " + project.projectId);
         }
       );
     }
@@ -100,7 +115,8 @@ export class ProjectComponent implements OnInit {
           this.dataSource.data = response;
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          // alert(error.message);
+          alert("No such project with manager id:" + project.managerId);
         }
       );
     }

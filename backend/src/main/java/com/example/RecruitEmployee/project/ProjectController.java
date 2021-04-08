@@ -2,6 +2,7 @@ package com.example.RecruitEmployee.project;
 
 import com.example.RecruitEmployee.dto.ProjectDto;
 import com.example.RecruitEmployee.exception.ApiRequestException;
+import com.example.RecruitEmployee.salary.SalaryService;
 import com.github.pagehelper.PageInfo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +16,14 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
+    private final SalaryService salaryService;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ProjectController(ProjectService projectService, ModelMapper modelMapper) {
+    public ProjectController(ProjectService projectService, SalaryService salaryService, ModelMapper modelMapper) {
         this.projectService = projectService;
+        this.salaryService = salaryService;
         this.modelMapper = modelMapper;
     }
 
@@ -56,8 +59,14 @@ public class ProjectController {
 
     @GetMapping(path = "{managerId}/projects")
     public List<Project> getProjectByManagerId(@PathVariable("managerId") Integer managerId){
-//        return (List<Project>) projectService.getProjectByManagerId(managerId).orElseThrow(() -> new ApiRequestException("Project not found with managerId:" + managerId));
-        return projectService.getProjectByManagerId(managerId);
+        List<Project> projects = projectService.getProjectByManagerId(managerId);
+        if (projects.isEmpty()) throw new ApiRequestException("Project not found with managerId:" + managerId);
+        else return  projects;
+    }
+
+    @GetMapping(path = "/projectCost/{projectId}")
+    public long getProjectCostByProjectId(@PathVariable("projectId") Integer projectId){
+        return salaryService.getProjectCost(projectId);
     }
 
     private ProjectDto convertToDto(Project project){

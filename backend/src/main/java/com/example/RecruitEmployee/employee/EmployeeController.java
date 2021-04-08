@@ -70,8 +70,9 @@ public class EmployeeController {
 
     @GetMapping(path = "{projectId}/employees")
     public List<Employee> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId) {
-//        return employeeService.getEmployeeByProjectId(projectId).orElseThrow(() -> new ApiRequestException("Employee not found with projectId:" + projectId));
-        return employeeService.getEmployeeByProjectId(projectId);
+       List<Employee> employees = employeeService.getEmployeeByProjectId(projectId);
+       if (employees.isEmpty()) throw new ApiRequestException("Employee not found with projectId:" + projectId);
+       else return employees;
     }
 
     private EmployeeDto convertToDto(Employee employee){

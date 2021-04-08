@@ -89,7 +89,8 @@ export class EmployeeComponent implements OnInit {
           this.dataSource.data = [response];
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          // alert(error.message);
+          alert("No such Employee with employee id: " + employee.empId);
         }
       );
     }
@@ -100,7 +101,8 @@ export class EmployeeComponent implements OnInit {
           this.dataSource.data = response;
         },
         (error: HttpErrorResponse) => {
-          alert(error.message);
+          // alert(error.message);
+          alert("No such Employees with project id: " + employee.projectId);
         }
       );
     }
