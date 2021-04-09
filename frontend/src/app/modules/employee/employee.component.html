@@ -49,7 +49,7 @@
 
          <ng-container matColumnDef="empSalary">
             <th mat-header-cell *matHeaderCellDef> Salary </th>
-            <td mat-cell *matCellDef="let element"> {{element.empSalary}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.empSalary | currency:'USD':'symbol-narrow'}} </td>
          </ng-container>
 
          <ng-container matColumnDef="projectId">

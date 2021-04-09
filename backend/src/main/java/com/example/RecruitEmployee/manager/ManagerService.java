@@ -39,7 +39,7 @@ public class ManagerService {
     }
 
     public int deleteEmployeeByManagerId(Integer managerId) {
-        return managerMapper.deleteEmployeeByManagerId(managerId);
+        return employeeMapper.deleteEmployee(managerId);
     }
 
     public PageInfo<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
@@ -47,4 +47,5 @@ public class ManagerService {
         List<Employee> pagedResult = employeeMapper.getAllEmployee();
         return new PageInfo<Employee>(pagedResult);
     }
+
 }

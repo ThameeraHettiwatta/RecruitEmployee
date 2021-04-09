@@ -34,15 +34,13 @@ export class ProjectComponent implements OnInit {
     console.log("a");
     this.projectService.getProjects().subscribe(
       (response: Project[]) => {
-        console.log(response)
-        for (var project of response) {
-          this.projectService.getProjectCostByProjectId(project.projectId).subscribe(
+        response.forEach((element) => {
+          this.projectService.getProjectCostByProjectId(element.projectId).subscribe(
             (res: number) => {
-              project.projectCost = res;
-              console.log(project.projectId, res, project.projectCost);
+              element.projectCost = res;
             }
           );
-        }
+        });
         this.dataSource.data = response;
       },
       (error: HttpErrorResponse) => {
