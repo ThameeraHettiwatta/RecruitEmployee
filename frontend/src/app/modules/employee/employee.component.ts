@@ -48,6 +48,7 @@ export class EmployeeComponent implements OnInit {
         console.log(response);
         this.getEmployees();
         addForm.reset();
+        alert("Successfully added Employee");
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -61,6 +62,7 @@ export class EmployeeComponent implements OnInit {
       (response: Employee) => {
         console.log(response);
         this.getEmployees();
+        alert("Successfully updated Employee: " + employee.empName);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -73,6 +75,7 @@ export class EmployeeComponent implements OnInit {
       (response: void) => {
         console.log(response);
         this.getEmployees();
+        alert("Successfully deleted Employee with Employee Id: " + employeeId);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);

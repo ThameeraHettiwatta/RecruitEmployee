@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ManagerService {
@@ -22,30 +23,34 @@ public class ManagerService {
         this.employeeMapper = employeeMapper;
     }
 
-    public List<Employee> getAllEmployee() {
-        return employeeMapper.getAllEmployee();
+    public List<Manager> getAllManager() {
+        return managerMapper.getAllManager();
     }
 
     public List<Employee> getEmployeeByManagerId(Integer managerId) {
         return managerMapper.getEmployeeByManagerId(managerId);
     }
 
-    public int addEmployee(Employee employee) {
-        return employeeMapper.addEmployee(employee);
+    public Optional<Manager> getManagerById(Integer managerId) {
+        return managerMapper.getManagerById(managerId);
     }
 
-    public int updateEmployee(Employee employee) {
-        return employeeMapper.updateEmployee(employee);
+    public int addManager(Manager manager) {
+        return managerMapper.addManager(manager);
     }
 
-    public int deleteEmployeeByManagerId(Integer managerId) {
-        return employeeMapper.deleteEmployee(managerId);
+    public int updateManager(Manager manager) {
+        return managerMapper.updateManager(manager);
     }
 
-    public PageInfo<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
-        PageHelper.startPage(pageNo, pageSize);
-        List<Employee> pagedResult = employeeMapper.getAllEmployee();
-        return new PageInfo<Employee>(pagedResult);
+    public int deleteManager(Integer managerId) {
+        return managerMapper.deleteManager(managerId);
     }
+
+//    public PageInfo<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
+//        PageHelper.startPage(pageNo, pageSize);
+//        List<Employee> pagedResult = employeeMapper.getAllEmployee();
+//        return new PageInfo<Employee>(pagedResult);
+//    }
 
 }

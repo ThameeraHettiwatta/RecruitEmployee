@@ -1,16 +1,18 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+<div ng-app ng-controller="form">
 <div class="container" id="main-container">
-    <!-- Search Employee -->
+    <!-- Search Manager -->
     <div>
         <mat-radio-group aria-label="Select an option">
             <h1>Search</h1>
-            <mat-radio-button value="all" (click)="toggle('all')" checked>All Employees</mat-radio-button>
+            <mat-radio-button value="all" (click)="toggle('all')" checked>All Managers</mat-radio-button>
             <mat-radio-button value="managerId" (click)="toggle('managerId')">Manager Id</mat-radio-button>
         </mat-radio-group>
-        <div *ngIf="!managerIdSearchDisabled" id="searchEmployeeByIdModal">
+        <div *ngIf="!managerIdSearchDisabled" id="searchManagerByIdModal">
             <form #searchForm="ngForm" (ngSubmit)="onSearchById(searchForm.value)">
                 <mat-form-field>
-                    <input matInput ngModel placeholder="Search by Manager Id" class="form-control" name="empId"
-                        id="empId" type="number">
+                    <input matInput ngModel placeholder="Search by Manager Id" class="form-control" name="managerId"
+                        id="managerId" type="number">
                     <button mat-button matSuffix mat-stroked-button aria-label="search" type="submit">
                         <mat-icon>search</mat-icon>
                     </button>
@@ -19,40 +21,35 @@
         </div>
     </div>
 
-    <!-- Create Employee -->
+    <!-- Create Manager -->
     <section>
         <div class="example-label"></div>
         <div class="example-button-row">
-            <button mat-stroked-button color="primary" (click)="onOpenModal(null, 'add')">Create Employee</button>
+            <button mat-stroked-button color="primary" (click)="onOpenModal(null, 'add')">Create Manager</button>
         </div>
     </section>
 
-    <!-- Table of Employees -->
+    <!-- Table of Managers -->
     <div class="mat-elevation-z8">
         <table mat-table [dataSource]="dataSource">
-            <ng-container matColumnDef="empId">
+            <ng-container matColumnDef="managerId">
                 <th mat-header-cell *matHeaderCellDef> Id </th>
-                <td mat-cell *matCellDef="let element"> {{element.empId}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.managerId}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="empName">
+            <ng-container matColumnDef="managerName">
                 <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.empName}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.managerName}} </td>
             </ng-container>
 
-            <ng-container matColumnDef="empSalary">
-                <th mat-header-cell *matHeaderCellDef> Salary </th>
-                <td mat-cell *matCellDef="let element"> {{element.empSalary | currency:'USD':'symbol-narrow'}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="projectId">
-                <th mat-header-cell *matHeaderCellDef> Project Id </th>
-                <td mat-cell *matCellDef="let element"> {{element.projectId}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="empEmail">
+            <ng-container matColumnDef="managerEmail">
                 <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let element"> {{element.empEmail}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.managerEmail}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="managerContactNumber">
+                <th mat-header-cell *matHeaderCellDef> Contact Number </th>
+                <td mat-cell *matCellDef="let element" > {{element.managerContactNumber}} </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">
@@ -77,41 +74,36 @@
     </div>
 </div>
 
-<!-- Add Employee Modal -->
-<div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel"
+<!-- Add Manager Modal -->
+<div class="modal fade" id="addManagerModal" tabindex="-1" role="dialog" aria-labelledby="addManagerModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addEmployeeModalLabel">Create Employee</h5>
+                <h5 class="modal-title" id="addManagerModalLabel">Create Manager</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form #addForm="ngForm" (ngSubmit)="onAddEmloyee(addForm)">
+                <form #addForm="ngForm" (ngSubmit)="onAddManager(addForm)">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" ngModel name="empName" class="form-control" id="empName"
-                            placeholder="Employee Name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="salary">Salary</label>
-                        <input type="number" ngModel name="empSalary" class="form-control" id="empSalary"
-                            placeholder="Employee Salary" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="projectId">Project Id</label>
-                        <input type="text" ngModel name="projectId" class="form-control" id="projectId"
-                            placeholder="Project Id" required>
+                        <input type="text" ngModel name="managerName" class="form-control" id="manager_name"
+                            placeholder="Manager Name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" ngModel name="empEmail" class="form-control" id="empEmail"
-                            placeholder="Employee Email" required>
+                        <input type="email" ngModel name="managerEmail" class="form-control" id="manager_email"
+                            placeholder="Manager Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="text" ngModel name="managerContactNumber" class="form-control" id="manager_contact_number"
+                            placeholder="Manager Contact Number" required>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" id="add-employee-form" class="btn btn-secondary"
+                        <button type="button" id="add-manager-form" class="btn btn-secondary"
                             data-dismiss="modal">Close</button>
                         <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
                     </div>
@@ -121,13 +113,13 @@
     </div>
 </div>
 
-<!-- Update Employee Modal -->
-<div class="modal fade" id="updateEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
+<!-- Update Manager Modal -->
+<div class="modal fade" id="updateManagerModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="updateEmployeeModalLabel">Edit Employee {{editEmployee?.empName}}</h5>
+                <h5 class="modal-title" id="updateManagerModalLabel">Edit Manager {{editManager?.managerName}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -136,29 +128,25 @@
                 <form #editForm="ngForm">
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" ngModel="{{editEmployee?.empName}}" name="empName" class="form-control"
-                            id="empName" aria-describedby="emailHelp" placeholder="Name">
+                        <input type="text" ngModel="{{editManager?.managerName}}" name="managerName" class="form-control"
+                            id="managerName" aria-describedby="emailHelp" placeholder="Name">
                     </div>
-                    <input type="hidden" ngModel="{{editEmployee?.empId}}" name="empId" class="form-control" id="empId"
+                    <input type="hidden" ngModel="{{editManager?.managerId}}" name="managerId" class="form-control" id="update_manager_id"
                         placeholder="Id">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" ngModel="{{editManager?.managerEmail}}" name="managerEmail" class="form-control"
+                                id="update_manager_email" placeholder="Manager Email">
+                        </div>
                     <div class="form-group">
-                        <label for="salary">Salary</label>
-                        <input type="number" ngModel="{{editEmployee?.empSalary}}" name="empSalary" class="form-control"
-                            id="empSalary" placeholder="Employee Salary">
+                        <label for="contact">Contact Number</label>
+                        <input type="text" ngModel="{{editManager?.managerContactNumber}}" name="managerContactNumber" class="form-control"
+                            id="update_manager_contact_number" placeholder="Manager Contact Number">
                     </div>
-                    <div class="form-group">
-                        <label for="projectId">Project Id</label>
-                        <input type="text" ngModel="{{editEmployee?.projectId}}" name="projectId" class="form-control"
-                            id="projectId" placeholder="Project Id">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" ngModel="{{editEmployee?.empEmail}}" name="empEmail" class="form-control"
-                            id="empEmail" placeholder="Employee Email">
-                    </div>
+
                     <div class="modal-footer">
                         <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
-                        <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal"
+                        <button (click)="onUpdateManager(editForm.value)" data-dismiss="modal"
                             class="btn btn-primary">Save
                             changes</button>
                     </div>
@@ -168,22 +156,22 @@
     </div>
 </div>
 
-<!-- Delete Employee Modal -->
-<div class="modal fade" id="deleteEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+<!-- Delete Manager Modal -->
+<div class="modal fade" id="deleteManagerModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModelLabel">Delete Employee</h5>
+                <h5 class="modal-title" id="deleteModelLabel">Delete Manager</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to delete employee {{deleteEmployee?.empName}}?</p>
+                <p>Are you sure you want to delete employee {{deleteManager?.managerName}}?</p>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button (click)="onDeleteEmloyee(deleteEmployee?.empId)" class="btn btn-danger"
+                    <button (click)="onDeleteManager(deleteManager?.managerId)" class="btn btn-danger"
                         data-dismiss="modal">Yes</button>
                 </div>
             </div>

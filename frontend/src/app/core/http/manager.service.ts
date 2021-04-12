@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Employee } from 'src/app/modules/employee/employee';
+import { Manager } from 'src/app/modules/manager/manager';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -12,24 +13,29 @@ export class ManagerService {
 
   constructor(private http: HttpClient) { }
 
-  public getEmployees(): Observable<Employee[]> {
-    return this.http.get<Employee[]>(`${this.apiServerUrl}/managers/getAllEmployee`);
+  public getManagers(): Observable<Manager[]> {
+    return this.http.get<Manager[]>(`${this.apiServerUrl}/managers/getAllEmployee`);
   }
 
-  public addEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(`${this.apiServerUrl}/managers/addEmployee`, employee);
+  public addManager(manager: Manager): Observable<Manager> {
+    console.log(manager);
+    return this.http.post<Manager>(`${this.apiServerUrl}/managers/addEmployee`, manager);
   }
 
-  public updateEmployee(employee: Employee): Observable<Employee> {
-    // console.log(employee);
-    return this.http.put<Employee>(`${this.apiServerUrl}/managers/updateEmployee`, employee);
+  public updateManager(manager: Manager): Observable<Manager> {
+    // console.log(manager);
+    return this.http.put<Manager>(`${this.apiServerUrl}/managers/updateEmployee`, manager);
   }
 
-  public deleteEmployee(managerId: number): Observable<void> {
+  public deleteManager(managerId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiServerUrl}/managers/deleteEmployee/${managerId}`);
   }
 
-  public getEmployeeById(managerId: number): Observable<Employee> {
-    return this.http.get<Employee>(`${this.apiServerUrl}/managers/getAllEmployees/${managerId}`);
+  public getEmployeesByManagerId(managerId: number): Observable<Employee> {
+    return this.http.get<Employee>(`${this.apiServerUrl}/managers/getEmployees/${managerId}`);
+  }
+
+  public getManagerById(managerId: number): Observable<Manager> {
+    return this.http.get<Manager>(`${this.apiServerUrl}/managers/getEmployee/${managerId}`);
   }
 }

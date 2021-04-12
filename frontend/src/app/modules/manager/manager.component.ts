@@ -5,6 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ManagerService } from 'src/app/core/http/manager.service';
 import { Employee } from '../employee/employee';
+import { Manager } from './manager';
 
 @Component({
   selector: 'app-manager',
@@ -13,25 +14,25 @@ import { Employee } from '../employee/employee';
 })
 export class ManagerComponent implements OnInit {
 
-  public employees: Employee[];
-  public editEmployee: Employee;
-  public deleteEmployee: Employee;
-  public searchEmployee: Employee;
+  public managers: Manager[];
+  public editManager: Manager;
+  public deleteManager: Manager;
+  public searchManager: Manager;
 
   managerIdSearchDisabled = true;
 
   constructor(private managerService: ManagerService) { }
 
-  displayedColumns: string[] = ['empId', 'empName', 'empSalary', 'projectId', 'empEmail', 'actions'];
-  dataSource = new MatTableDataSource<Employee>();
+  displayedColumns: string[] = ['managerId', 'managerName', 'managerEmail', 'managerContactNumber', 'actions'];
+  dataSource = new MatTableDataSource<Manager>();
 
   ngOnInit() {
-    this.getEmployees();
+    this.getManagers();
   }
 
-  public getEmployees(): void {
-    this.managerService.getEmployees().subscribe(
-      (response: Employee[]) => {
+  public getManagers(): void {
+    this.managerService.getManagers().subscribe(
+      (response: Manager[]) => {
         this.dataSource.data = response;
       },
       (error: HttpErrorResponse) => {
@@ -40,13 +41,14 @@ export class ManagerComponent implements OnInit {
     );
   }
 
-  public onAddEmloyee(addForm: NgForm): void {
-    document.getElementById('add-employee-form').click();
-    this.managerService.addEmployee(addForm.value).subscribe(
-      (response: Employee) => {
+  public onAddManager(addForm: NgForm): void {
+    document.getElementById('add-manager-form').click();
+    this.managerService.addManager(addForm.value).subscribe(
+      (response: Manager) => {
         console.log(response);
-        this.getEmployees();
+        this.getManagers();
         addForm.reset();
+        alert("Successfully added Manager");
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -55,11 +57,12 @@ export class ManagerComponent implements OnInit {
     );
   }
 
-  public onUpdateEmloyee(employee: Employee): void {
-    this.managerService.updateEmployee(employee).subscribe(
-      (response: Employee) => {
+  public onUpdateManager(manager: Manager): void {
+    this.managerService.updateManager(manager).subscribe(
+      (response: Manager) => {
         console.log(response);
-        this.getEmployees();
+        this.getManagers();
+        alert("Successfully updated Manager: " + manager.managerName);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -67,11 +70,12 @@ export class ManagerComponent implements OnInit {
     );
   }
 
-  public onDeleteEmloyee(managerId: number): void {
-    this.managerService.deleteEmployee(managerId).subscribe(
+  public onDeleteManager(managerId: number): void {
+    this.managerService.deleteManager(managerId).subscribe(
       (response: void) => {
         console.log(response);
-        this.getEmployees();
+        this.getManagers();
+        alert("Successfully deleted Manager with Manager Id: " + managerId)
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -79,15 +83,15 @@ export class ManagerComponent implements OnInit {
     );
   }
 
-  public onSearchById(employee: Employee): void {
-    this.managerService.getEmployeeById(employee.empId).subscribe(
-      (response: Employee) => {
+  public onSearchById(manager: Manager): void {
+    this.managerService.getManagerById(manager.managerId).subscribe(
+      (response: Manager) => {
         console.log(response);
         this.dataSource.data = [response];
       },
       (error: HttpErrorResponse) => {
         // alert(error.message);
-        alert("No such Employee with manager id: " + employee.empId);
+        alert("No such Manager with manager id: " + manager.managerId);
       }
     );
   }
@@ -103,26 +107,26 @@ export class ManagerComponent implements OnInit {
     }
     if (mode === 'all') {
       this.managerIdSearchDisabled = true;
-      this.getEmployees();
+      this.getManagers();
     }
   }
 
-  public onOpenModal(employee: Employee, mode: string): void {
+  public onOpenModal(manager: Manager, mode: string): void {
     const container = document.getElementById('main-container');
     const button = document.createElement('button');
     button.type = 'button';
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
-      button.setAttribute('data-target', '#addEmployeeModal');
+      button.setAttribute('data-target', '#addManagerModal');
     }
     if (mode === 'edit') {
-      this.editEmployee = employee;
-      button.setAttribute('data-target', '#updateEmployeeModal');
+      this.editManager = manager;
+      button.setAttribute('data-target', '#updateManagerModal');
     }
     if (mode === 'delete') {
-      this.deleteEmployee = employee;
-      button.setAttribute('data-target', '#deleteEmployeeModal');
+      this.deleteManager = manager;
+      button.setAttribute('data-target', '#deleteManagerModal');
     }
     container.appendChild(button);
     button.click();
