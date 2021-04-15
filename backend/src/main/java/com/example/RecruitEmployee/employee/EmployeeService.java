@@ -21,7 +21,8 @@ public class EmployeeService {
     }
 
     public List<Employee> getAllEmployee() {
-        return employeeMapper.getAllEmployee();
+        List<Employee> employees = employeeMapper.getAllEmployee();
+        return employees;
     }
 
     public Optional<Employee> getEmployeeById(Integer empId) {
