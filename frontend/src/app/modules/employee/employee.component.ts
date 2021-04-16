@@ -33,6 +33,7 @@ export class EmployeeComponent implements OnInit {
   public getEmployees(): void {
     this.employeeService.getEmployees().subscribe(
       (response: Employee[]) => {
+        console.log(response);
         this.dataSource.data = response;
       },
       (error: HttpErrorResponse) => {

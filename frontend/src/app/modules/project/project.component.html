@@ -2,7 +2,7 @@
     <!-- Search Project -->
     <div>
         <mat-radio-group aria-label="Select an option">
-            <h1>Search</h1>
+            <h3>Search</h3>
             <mat-radio-button value="all" (click)="toggle('all')" checked>All Projects</mat-radio-button>
             <mat-radio-button value="projectId" (click)="toggle('projectId')">Project Id</mat-radio-button>
             <mat-radio-button value="managerId" (click)="toggle('managerId')">Manager Id</mat-radio-button>
@@ -80,7 +80,15 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
 
-        <!-- <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- Notification for no projects -->
+    <div *ngIf="dataSource.data?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">NO PROJECTS!</h4>
+            <p>No Projects were found.</p>
+        </div>
     </div>
 </div>
 

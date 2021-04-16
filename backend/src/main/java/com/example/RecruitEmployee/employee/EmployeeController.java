@@ -18,20 +18,10 @@ public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    private final ModelMapper modelMapper;
-
     @Autowired
     public EmployeeController(EmployeeService employeeService, ModelMapper modelMapper) {
         this.employeeService = employeeService;
-        this.modelMapper = modelMapper;
     }
-
-//    private final EmployeeMapper employeeMapper;
-//
-//    public EmployeeController(EmployeeMapper employeeMapper) {
-//        this.employeeMapper = employeeMapper;
-//    }
-
 
     @GetMapping
     public ResponseEntity<List<Employee>> getAllEmployee() {
@@ -48,8 +38,10 @@ public class EmployeeController {
 
     @GetMapping(path = "{empId}")
     public EmployeeDto getEmployeeById(@PathVariable("empId") Integer empId) {
-        return convertToDto(employeeService.getEmployeeById(empId).orElseThrow(() -> new ApiRequestException("User not found with empId:" + empId)));
+//        return convertToDto(employeeService.getEmployeeById(empId).orElseThrow(() -> new ApiRequestException("User not found with empId:" + empId)));
+        return employeeService.getEmployeeById(empId);
     }
+
 
     @PostMapping
     public ResponseEntity<Integer> addEmployee(@NonNull @RequestBody Employee employee) {
@@ -64,23 +56,15 @@ public class EmployeeController {
     }
 
     @DeleteMapping(path = "{empId}")
-    public int deleteEmployee(@PathVariable("empId") Integer empId) {
-        return employeeService.deleteEmployee(empId);
+    public ResponseEntity<Integer> deleteEmployee(@PathVariable("empId") Integer empId) {
+        int deleted = employeeService.deleteEmployee(empId);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 
     @GetMapping(path = "{projectId}/employees")
-    public List<Employee> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId) {
+    public ResponseEntity<List<Employee>> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId) {
        List<Employee> employees = employeeService.getEmployeeByProjectId(projectId);
-       if (employees.isEmpty()) throw new ApiRequestException("Employee not found with projectId:" + projectId);
-       else return employees;
-    }
-
-    private EmployeeDto convertToDto(Employee employee){
-        return modelMapper.map(employee, EmployeeDto.class);
-    }
-
-    private Employee convertToEntity(EmployeeDto employeeDto){
-        return modelMapper.map(employeeDto, Employee.class);
+       return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 
 }
