@@ -60,7 +60,7 @@ export class ProjectComponent implements OnInit {
         alert("Project added successfully");
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
         addForm.reset();
       }
     );
@@ -74,7 +74,7 @@ export class ProjectComponent implements OnInit {
         alert("Project updated successfully");
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
       }
     );
   }
@@ -87,7 +87,7 @@ export class ProjectComponent implements OnInit {
         alert("Delete Project successful");
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
       }
     );
   }

@@ -1,6 +1,8 @@
 package com.example.RecruitEmployee.project;
 
+import com.example.RecruitEmployee.dto.EmployeeDto;
 import com.example.RecruitEmployee.dto.ProjectDto;
+import com.example.RecruitEmployee.employee.Employee;
 import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.example.RecruitEmployee.mapper.ProjectMapper;
 import com.github.pagehelper.PageHelper;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -24,38 +27,57 @@ public class ProjectService {
         this.modelMapper = modelMapper;
     }
 
-    public List<Project> getAllProject() {
-        return projectMapper.getAllProject();
+    public List<ProjectDto> getAllProject() {
+        List<Project> projects = projectMapper.getAllProject();
+        return projects.stream().map((project)->{
+            ProjectDto projectDto;
+            projectDto = convertToDto(project);
+            return projectDto;
+        }).collect(Collectors.toList());
     }
 
-    public PageInfo<Project> getPaginatedProject(int pageNo, int pageSize) {
+    public PageInfo<ProjectDto> getPaginatedProject(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo, pageSize);
         List<Project> pagedResult = projectMapper.getAllProject();
-        return new PageInfo<Project>(pagedResult);
+        return new PageInfo<ProjectDto>(pagedResult.stream().map((project)->{
+            ProjectDto projectDto;
+            projectDto = convertToDto(project);
+            return projectDto;
+        }).collect(Collectors.toList()));
     }
 
     public ProjectDto getProjectById(Integer projectId) {
         return convertToDto(projectMapper.getProjectById(projectId).orElseThrow(() -> new ApiRequestException("Project not found with projectId:" + projectId)));
     }
 
-    public int addProject(Project project) {
-        return projectMapper.addProject(project);
+    public int addProject(ProjectDto project) {
+        Optional<Project> project1 = projectMapper.getProjectByName(project.getProjectName());
+        if(project1.isPresent()) throw new ApiRequestException("Project already exist");
+        return projectMapper.addProject(covertToEntity(project));
     }
 
-    public int updateProject(Project project) {
+    public int updateProject(ProjectDto project) {
         projectMapper.getProjectById(project.getProjectId()).orElseThrow(() -> new ApiRequestException("Project not found with projectId:" + project.getProjectId()));
-        return projectMapper.updateProject(project);
+        return projectMapper.updateProject(covertToEntity(project));
     }
 
     public int deleteProject(Integer projectId) {
         projectMapper.getProjectById(projectId).orElseThrow(() -> new ApiRequestException("Project not found with projectId:" + projectId));
-        return projectMapper.deleteProject(projectId);
+        try {
+            return projectMapper.deleteProject(projectId);
+        } catch (ApiRequestException e){
+            throw new ApiRequestException("Cannot delete Project, since it's linked to Employees");
+        }
     }
 
-    public List<Project> getProjectByManagerId(Integer managerId) {
+    public List<ProjectDto> getProjectByManagerId(Integer managerId) {
         List<Project> projects = projectMapper.getProjectByManagerId(managerId);
         if (projects.isEmpty()) throw new ApiRequestException("Project not found with managerId:" + managerId);
-        else return projects;
+        return projects.stream().map((project)->{
+            ProjectDto projectDto;
+            projectDto = convertToDto(project);
+            return projectDto;
+        }).collect(Collectors.toList());
     }
 
     private ProjectDto convertToDto(Project project){

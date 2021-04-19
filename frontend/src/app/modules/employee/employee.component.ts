@@ -52,7 +52,7 @@ export class EmployeeComponent implements OnInit {
         alert("Successfully added Employee");
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
         addForm.reset();
       }
     );
@@ -66,7 +66,7 @@ export class EmployeeComponent implements OnInit {
         alert("Successfully updated Employee: " + employee.empName);
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
       }
     );
   }
@@ -79,7 +79,7 @@ export class EmployeeComponent implements OnInit {
         alert("Successfully deleted Employee with Employee Id: " + employeeId);
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
       }
     );
   }

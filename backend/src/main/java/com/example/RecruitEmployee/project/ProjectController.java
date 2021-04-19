@@ -28,14 +28,14 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getAllProject(){
-        List<Project> projects = projectService.getAllProject();
+    public ResponseEntity<List<ProjectDto>> getAllProject(){
+        List<ProjectDto> projects = projectService.getAllProject();
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
     @GetMapping(path = "{pageNo}/{pageSize}")
-    public ResponseEntity<PageInfo<Project>> getPaginatedProject(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize){
-        PageInfo<Project> pageProject = projectService.getPaginatedProject(pageNo, pageSize);
+    public ResponseEntity<PageInfo<ProjectDto>> getPaginatedProject(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize){
+        PageInfo<ProjectDto> pageProject = projectService.getPaginatedProject(pageNo, pageSize);
         return new ResponseEntity<>(pageProject, HttpStatus.OK);
     }
 
@@ -46,13 +46,13 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<Integer> addProject(@NonNull @RequestBody Project project){
+    public ResponseEntity<Integer> addProject(@NonNull @RequestBody ProjectDto project){
         int added = projectService.addProject(project);
         return new ResponseEntity<>(added, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Integer> updateProject(@NonNull @RequestBody Project project){
+    public ResponseEntity<Integer> updateProject(@NonNull @RequestBody ProjectDto project){
         int updated = projectService.updateProject(project);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
@@ -64,8 +64,8 @@ public class ProjectController {
     }
 
     @GetMapping(path = "{managerId}/projects")
-    public ResponseEntity<List<Project>> getProjectByManagerId(@PathVariable("managerId") Integer managerId){
-        List<Project> projects = projectService.getProjectByManagerId(managerId);
+    public ResponseEntity<List<ProjectDto>> getProjectByManagerId(@PathVariable("managerId") Integer managerId){
+        List<ProjectDto> projects = projectService.getProjectByManagerId(managerId);
         return  new ResponseEntity<>(projects, HttpStatus.OK);
     }
 

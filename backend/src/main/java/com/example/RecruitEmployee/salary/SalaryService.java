@@ -1,10 +1,6 @@
 package com.example.RecruitEmployee.salary;
-
 import com.example.RecruitEmployee.employee.Employee;
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
-import com.example.RecruitEmployee.mapper.ProjectMapper;
-import com.example.RecruitEmployee.mapper.SalaryMapper;
-import com.example.RecruitEmployee.project.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -14,12 +10,10 @@ import java.util.List;
 
 @Service
 public class SalaryService {
-    private final SalaryMapper salaryMapper;
     private final EmployeeMapper employeeMapper;
 
     @Autowired
-    public SalaryService(@Qualifier("SalaryMapper") SalaryMapper salaryMapper,@Qualifier("EmployeeMapper") EmployeeMapper employeeMapper) {
-        this.salaryMapper = salaryMapper;
+    public SalaryService(@Qualifier("EmployeeMapper") EmployeeMapper employeeMapper) {
         this.employeeMapper = employeeMapper;
     }
 

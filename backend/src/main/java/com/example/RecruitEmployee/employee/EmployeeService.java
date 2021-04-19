@@ -10,8 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeService {
@@ -26,24 +29,31 @@ public class EmployeeService {
         this.modelMapper = modelMapper;
     }
 
-    public List<Employee> getAllEmployee() {
-        return employeeMapper.getAllEmployee();
+    public List<EmployeeDto> getAllEmployee() {
+        List<Employee> employees = employeeMapper.getAllEmployee();
+        return employees.stream().map((employee)->{
+            EmployeeDto employeeDto;
+            employeeDto = convertToDto(employee);
+            return employeeDto;
+        }).collect(Collectors.toList());
     }
 
     public EmployeeDto getEmployeeById(Integer empId) {
-//        return employeeMapper.getEmployeeById(empId);
         return convertToDto(employeeMapper.getEmployeeById(empId).orElseThrow(() -> new ApiRequestException("User not found with empId:" + empId)));
     }
 
 
     public int addEmployee(Employee employee) {
-//        check adding same employee
+        Optional<Employee> employeeByEmail = employeeMapper.getEmployeeByEmail(employee.getEmpEmail());
+        if (employeeByEmail.isPresent()) throw new ApiRequestException("Employee already exist");
+//        return employeeMapper.addEmployee(convertToEntity(employee));
         return employeeMapper.addEmployee(employee);
     }
 
-    public int updateEmployee(Employee employee) {
+
+    public int updateEmployee(EmployeeDto employee) {
         employeeMapper.getEmployeeById(employee.getEmpId()).orElseThrow(() -> new ApiRequestException("User not found with empId:" + employee.getEmpId()));
-        return employeeMapper.updateEmployee(employee);
+        return employeeMapper.updateEmployee(convertToEntity(employee));
     }
 
     public int deleteEmployee(Integer empId) {
@@ -51,16 +61,24 @@ public class EmployeeService {
         return employeeMapper.deleteEmployee(empId);
     }
 
-    public List<Employee> getEmployeeByProjectId(Integer projectId) {
+    public List<EmployeeDto> getEmployeeByProjectId(Integer projectId) {
         List<Employee> employees = employeeMapper.getEmployeeByProjectId(projectId);
         if (employees.isEmpty()) throw new ApiRequestException("Employee not found with projectId:" + projectId);
-        else return employees;
+        return employees.stream().map((employee)->{
+            EmployeeDto employeeDto;
+            employeeDto = convertToDto(employee);
+            return employeeDto;
+        }).collect(Collectors.toList());
     }
 
-    public PageInfo<Employee> getPaginatedEmployee(int pageNo, int pageSize) {
+    public PageInfo<EmployeeDto> getPaginatedEmployee(int pageNo, int pageSize) {
         PageHelper.startPage(pageNo, pageSize);
         List<Employee> pagedResult = employeeMapper.getAllEmployee();
-        return new PageInfo<Employee>(pagedResult);
+        return new PageInfo<EmployeeDto>(pagedResult.stream().map((employee)->{
+            EmployeeDto employeeDto;
+            employeeDto = convertToDto(employee);
+            return employeeDto;
+        }).collect(Collectors.toList()));
     }
 
     private EmployeeDto convertToDto(Employee employee){

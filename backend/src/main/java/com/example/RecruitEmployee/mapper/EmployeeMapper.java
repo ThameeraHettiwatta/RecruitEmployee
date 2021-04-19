@@ -12,14 +12,6 @@ import java.util.Optional;
 public interface EmployeeMapper {
 
     @Select("SELECT * FROM Employee")
-//    @Results({
-//            @Result(id = true, property = "empId", column = "emp_id"),
-//            @Result(property = "empName", column = "emp_name"),
-//            @Result(property = "empSalary", column = "emp_salary"),
-//            @Result(property = "project", column = "project_id",
-//                    one = @One(select = "com.example.RecruitEmployee.mapper.ProjectMapper.findAllProjects")),
-//            @Result(property = "empEmail", column = "emp_email")
-//    })
     List<Employee> getAllEmployee();
 
     @Select("SELECT * FROM Employee WHERE emp_id = #{empId}")
@@ -38,7 +30,6 @@ public interface EmployeeMapper {
     @Select("SELECT * FROM Employee WHERE project_id=#{projectId}")
     List<Employee> getEmployeeByProjectId(Integer projectId);
 
-//    @Select("SELECT * FROM Employee")
-//    List<Employee> getPaginatedEmployee();
-   
+    @Select("SELECT * FROM Employee WHERE emp_email = #{empEmail}")
+    Optional<Employee> getEmployeeByEmail(String empEmail);
 }

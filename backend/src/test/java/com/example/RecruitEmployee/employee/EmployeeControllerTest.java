@@ -44,8 +44,13 @@ class EmployeeControllerTest {
 
     @Test
     void getAllEmployee() throws Exception{
-        List<Employee> employees = new ArrayList<>();
-        Employee employee1 = new Employee(2, "emp1", 4852L, 8, "emp1@gmail.com");
+        List<EmployeeDto> employees = new ArrayList<>();
+        EmployeeDto employee1 = new EmployeeDto();
+        employee1.setEmpId(1);
+        employee1.setEmpName("emp1");
+        employee1.setEmpEmail("emp1@gmail.com");
+        employee1.setEmpSalary(4852L);
+        employee1.setProjectId(8);
         employees.add(employee1);
         Mockito.when(employeeService.getAllEmployee()).thenReturn(employees);
         mockMvc.perform(get("/employees")
@@ -78,7 +83,7 @@ class EmployeeControllerTest {
         mockMvc.perform(post("/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee1)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 //                .andExpect(jsonPath("$", Matchers.equalTo(1)));
     }
 
@@ -104,14 +109,19 @@ class EmployeeControllerTest {
 
     @Test
     void getEmployeeByProjectId() throws Exception{
-        List<Employee> employees = new ArrayList<>();
-        Employee employee1 = new Employee(2, "emp1", 4852L, 8, "emp1@gmail.com");
+        List<EmployeeDto> employees = new ArrayList<>();
+        EmployeeDto employee1 = new EmployeeDto();
+        employee1.setEmpId(1);
+        employee1.setEmpName("emp1");
+        employee1.setEmpEmail("emp1@gmail.com");
+        employee1.setEmpSalary(4852L);
+        employee1.setProjectId(8);
         employees.add(employee1);
         Mockito.when(employeeService.getEmployeeByProjectId(8)).thenReturn(employees);
         mockMvc.perform(get("/employees/8/employees")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
-                .andExpect(jsonPath("$[0].empId", Matchers.equalTo(2)));
+                .andExpect(jsonPath("$[0].empId", Matchers.equalTo(1)));
     }
 }

@@ -10,17 +10,9 @@ import java.util.Optional;
 @Mapper
 @Qualifier("ProjectMapper")
 public interface ProjectMapper {
-    @Select("SELECT * FROM Project")
-        //    @Results({
-//            @Result(id = true, property = "projectId", column = "project_id"),
-//            @Result(property = "projectName", column = "project_name"),
-//            @Result(property = "projectLocation", column = "project_location"),
-//            @Result(property = "manager", column = "manager_id", one = @One(select = "com.example.RecruitEmployee.mapper.ManagerMapper.findAllManagers"))
-//    })
-    List<Project> getAllProject();
 
-//    @Select("SELECT * FROM Project")
-//    List<Project> getPaginatedProject();
+    @Select("SELECT * FROM Project")
+    List<Project> getAllProject();
 
     @Select("SELECT * FROM Project WHERE project_id=#{projectId}")
     Optional<Project> getProjectById(Integer projectId);
@@ -37,4 +29,7 @@ public interface ProjectMapper {
 
     @Select("SELECT * FROM Project WHERE manager_id=#{managerId}")
     List<Project> getProjectByManagerId(Integer managerId);
+
+    @Select("SELECT * FROM Project WHERE project_name=#{projectName}")
+    Optional<Project> getProjectByName(String projectName);
 }

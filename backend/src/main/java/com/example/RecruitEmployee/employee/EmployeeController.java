@@ -1,9 +1,7 @@
 package com.example.RecruitEmployee.employee;
 
 import com.example.RecruitEmployee.dto.EmployeeDto;
-import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.github.pagehelper.PageInfo;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,38 +17,37 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService, ModelMapper modelMapper) {
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getAllEmployee() {
-        List<Employee> employees = employeeService.getAllEmployee();
+    public ResponseEntity<List<EmployeeDto>> getAllEmployee() {
+        List<EmployeeDto> employees = employeeService.getAllEmployee();
         return new ResponseEntity<>(employees, HttpStatus.OK);
-//        return employeeService.getAllEmployee();
     }
 
     @GetMapping(path = "{pageNo}/{pageSize}")
-    public ResponseEntity<PageInfo<Employee>> getPaginatedEmployee(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize) {
-        PageInfo<Employee> pageEmployee = employeeService.getPaginatedEmployee(pageNo, pageSize);
+    public ResponseEntity<PageInfo<EmployeeDto>> getPaginatedEmployee(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize) {
+        PageInfo<EmployeeDto> pageEmployee = employeeService.getPaginatedEmployee(pageNo, pageSize);
         return new ResponseEntity<>(pageEmployee, HttpStatus.OK);
     }
 
     @GetMapping(path = "{empId}")
-    public EmployeeDto getEmployeeById(@PathVariable("empId") Integer empId) {
-//        return convertToDto(employeeService.getEmployeeById(empId).orElseThrow(() -> new ApiRequestException("User not found with empId:" + empId)));
-        return employeeService.getEmployeeById(empId);
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable("empId") Integer empId) {
+        EmployeeDto employeeDto = employeeService.getEmployeeById(empId);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
 
     @PostMapping
     public ResponseEntity<Integer> addEmployee(@NonNull @RequestBody Employee employee) {
         int added = employeeService.addEmployee(employee);
-        return new ResponseEntity<>(added, HttpStatus.OK);
+        return new ResponseEntity<>(added, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Integer> updateEmployee(@NonNull @RequestBody Employee employee) {
+    public ResponseEntity<Integer> updateEmployee(@NonNull @RequestBody EmployeeDto employee) {
         int updated = employeeService.updateEmployee(employee);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
@@ -62,8 +59,8 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "{projectId}/employees")
-    public ResponseEntity<List<Employee>> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId) {
-       List<Employee> employees = employeeService.getEmployeeByProjectId(projectId);
+    public ResponseEntity<List<EmployeeDto>> getEmployeeByProjectId(@PathVariable("projectId") Integer projectId) {
+       List<EmployeeDto> employees = employeeService.getEmployeeByProjectId(projectId);
        return new ResponseEntity<>(employees, HttpStatus.OK);
     }
 

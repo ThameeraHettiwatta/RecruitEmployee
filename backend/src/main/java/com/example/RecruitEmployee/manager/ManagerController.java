@@ -1,10 +1,14 @@
 package com.example.RecruitEmployee.manager;
 
+import com.example.RecruitEmployee.dto.EmployeeDto;
+import com.example.RecruitEmployee.dto.ManagerDto;
 import com.example.RecruitEmployee.employee.Employee;
 import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.github.pagehelper.PageInfo;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,47 +21,45 @@ public class ManagerController {
 
     private final ManagerService managerService;
 
-    private final ModelMapper modelMapper;
-
     @Autowired
-    public ManagerController(ManagerService managerService, ModelMapper modelMapper) {
+    public ManagerController(ManagerService managerService) {
         this.managerService = managerService;
-        this.modelMapper = modelMapper;
     }
 
     @GetMapping(path = "getAllEmployee")
-    public List<Manager> getAllEmployees(){
-        return managerService.getAllManager();
+    public ResponseEntity<List<ManagerDto>> getAllEmployees(){
+        List<ManagerDto> managerDtos = managerService.getAllManager();
+        return new ResponseEntity<>(managerDtos, HttpStatus.OK);
     }
 
-//    @GetMapping(path = "{pageNo}/{pageSize}")
-//    public PageInfo<Employee> getPaginatedEmployee(@PathVariable("pageNo") int pageNo, @PathVariable("pageSize") int pageSize) {
-//        return managerService.getPaginatedEmployee(pageNo, pageSize);
-//    }
-
     @GetMapping(path = "getEmployee/{managerId}")
-    public Optional<Manager> getManagerById(@PathVariable("managerId") Integer managerId){
-        return Optional.ofNullable(managerService.getManagerById(managerId).orElseThrow(() -> new ApiRequestException("User not found with managerId:" + managerId)));
+    public ResponseEntity<ManagerDto> getManagerById(@PathVariable("managerId") Integer managerId){
+        ManagerDto managerDto = managerService.getManagerById(managerId);
+        return new ResponseEntity<>(managerDto, HttpStatus.OK);
     }
 
     @GetMapping(path = "getEmployees/{managerId}")
-    public List<Employee> getEmployeeByManagerId(@PathVariable("managerId") Integer managerId){
-        return managerService.getEmployeeByManagerId(managerId);
+    public ResponseEntity<List<EmployeeDto>> getEmployeeByManagerId(@PathVariable("managerId") Integer managerId){
+        List<EmployeeDto> employeeDto= managerService.getEmployeeByManagerId(managerId);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
     @PostMapping(path = "addEmployee")
-    public int addManager(@NonNull @RequestBody Manager manager){
-        return managerService.addManager(manager);
+    public ResponseEntity<Integer> addManager(@NonNull @RequestBody ManagerDto manager){
+        int added = managerService.addManager(manager);
+        return new ResponseEntity<>(added, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "updateEmployee")
-    public int updateManager(@NonNull @RequestBody Manager manager) {
-        return managerService.updateManager(manager);
+    public ResponseEntity<Integer> updateManager(@NonNull @RequestBody ManagerDto manager) {
+        int updated = managerService.updateManager(manager);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "deleteEmployee/{managerId}")
-    public int deleteManager(@PathVariable("managerId") Integer managerId) {
-        return managerService.deleteManager(managerId);
+    public ResponseEntity<Integer> deleteManager(@PathVariable("managerId") Integer managerId) {
+        int deleted = managerService.deleteManager(managerId);
+        return new ResponseEntity<>(deleted, HttpStatus.OK);
     }
 
 

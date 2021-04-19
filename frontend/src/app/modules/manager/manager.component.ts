@@ -51,7 +51,7 @@ export class ManagerComponent implements OnInit {
         alert("Successfully added Manager");
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
         addForm.reset();
       }
     );
@@ -65,7 +65,7 @@ export class ManagerComponent implements OnInit {
         alert("Successfully updated Manager: " + manager.managerName);
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
       }
     );
   }
@@ -78,7 +78,7 @@ export class ManagerComponent implements OnInit {
         alert("Successfully deleted Manager with Manager Id: " + managerId)
       },
       (error: HttpErrorResponse) => {
-        alert(error.message);
+        alert(error.error.message);
       }
     );
   }

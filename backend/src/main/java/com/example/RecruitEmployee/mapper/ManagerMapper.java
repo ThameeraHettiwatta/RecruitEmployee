@@ -26,19 +26,22 @@ public interface ManagerMapper {
 //    @Delete("DELETE Employee FROM Employee INNER JOIN Project ON Employee.project_id=Project.project_id INNER JOIN ProjectManager ON Project.manager_id=ProjectManager.manager_id WHERE ProjectManager.manager_id = #{managerId}")
 //    int deleteEmployeeByManagerId(Integer managerId);
 
-    @Select("select * from ProjectManager")
+    @Select("SELECT * FROM ProjectManager")
     List<Manager> getAllManager();
 
-    @Select("select * from ProjectManager where manager_id = #{managerId}")
+    @Select("SELECT * FROM ProjectManager WHERE manager_id = #{managerId}")
     Optional<Manager> getManagerById(Integer id);
 
-    @Insert("INSERT INTO ProjectManager(manager_id, manager_name, manager_email, manager_contact_number) Values(#{managerId},#{managerName},#{managerEmail},#{managerContactNumber})")
+    @Insert("INSERT INTO ProjectManager(manager_id, manager_name, manager_email, manager_contact_number) VALUES(#{managerId},#{managerName},#{managerEmail},#{managerContactNumber})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "managerId", before = false, resultType = Integer.class)
     int addManager(Manager manager);
 
-    @Update("UPDATE ProjectManager SET manager_name=#{managerName},manager_email=#{managerEmail},manager_contact_number=#{managerContactNumber} Where manager_id = #{managerId}")
+    @Update("UPDATE ProjectManager SET manager_name=#{managerName},manager_email=#{managerEmail},manager_contact_number=#{managerContactNumber} WHERE manager_id = #{managerId}")
     int updateManager(Manager manager);
 
     @Delete("DELETE FROM ProjectManager WHERE manager_id=#{managerId}")
     int deleteManager(Integer managerId);
+
+    @Select("SELECT * FROM ProjectManager WHERE manager_email = #{managerEmail}")
+    Optional<Manager> getManagerByEmail(String managerEmail);
 }
