@@ -118,8 +118,12 @@
                </div>
                <div class="form-group">
                   <label for="projectId">Project Id</label>
-                  <input type="text" ngModel name="projectId" class="form-control" id="projectId"
-                     placeholder="Project Id" required>
+                  <select class="browser-default custom-select" ngModel name="projectId">
+                     <option>Project Id</option>
+                     <option *ngFor="let project of projects" [value]="project.projectId">
+                        {{project.projectId}}
+                     </option>
+                  </select>
                </div>
                <div class="form-group">
                   <label for="email">Email Address</label>
@@ -164,8 +168,11 @@
                </div>
                <div class="form-group">
                   <label for="projectId">Project Id</label>
-                  <input type="text" ngModel="{{editEmployee?.projectId}}" name="projectId" class="form-control"
-                     id="projectId" placeholder="Project Id">
+                  <select class="browser-default custom-select" ngModel="{{editEmployee?.projectId}}" name="projectId">
+                     <option *ngFor="let project of projects" [value]="project.projectId">
+                        {{project.projectId}}
+                     </option>
+                  </select>
                </div>
                <div class="form-group">
                   <label for="email">Email Address</label>

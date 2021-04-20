@@ -5,6 +5,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { MatTableDataSource } from "@angular/material/table";
 import { MatPaginator } from "@angular/material/paginator";
 import { NgForm } from '@angular/forms';
+import { Project } from '../project/project';
+import { ProjectService } from 'src/app/core/http/project.service';
 
 @Component({
   selector: 'app-all-employees',
@@ -17,17 +19,29 @@ export class EmployeeComponent implements OnInit {
   public editEmployee: Employee;
   public deleteEmployee: Employee;
   public searchEmployee: Employee;
+  public projects: Project[];
 
   employeeIdSearchDisabled = true;
   projectIdSearchDisabled = true;
 
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private employeeService: EmployeeService, private projectService: ProjectService) { }
 
   displayedColumns: string[] = ['empId', 'empName', 'empSalary', 'projectId', 'empEmail', 'actions'];
   dataSource = new MatTableDataSource<Employee>();
 
   ngOnInit() {
     this.getEmployees();
+  }
+
+  public getProjects(): void {
+    this.projectService.getProjects().subscribe(
+      (response: Project[]) => {
+        this.projects = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
   }
 
   public getEmployees(): void {
@@ -113,11 +127,6 @@ export class EmployeeComponent implements OnInit {
 
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
-
   public toggle(mode: string) {
     if (mode === 'empId') {
       this.employeeIdSearchDisabled = false;
@@ -141,9 +150,11 @@ export class EmployeeComponent implements OnInit {
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
+      this.getProjects();
       button.setAttribute('data-target', '#addEmployeeModal');
     }
     if (mode === 'edit') {
+      this.getProjects();
       this.editEmployee = employee;
       button.setAttribute('data-target', '#updateEmployeeModal');
     }

@@ -3,7 +3,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ManagerService } from 'src/app/core/http/manager.service';
 import { ProjectService } from 'src/app/core/http/project.service';
+import { Manager } from '../manager/manager';
 import { Project } from './project';
 
 @Component({
@@ -17,11 +19,12 @@ export class ProjectComponent implements OnInit {
   public editProject: Project;
   public deleteProject: Project;
   public searchProject: Project;
+  public managers: Manager[];
 
   projectIdSearchDisabled = true;
   managerIdSearchDisabled = true;
 
-  constructor(private projectService: ProjectService) { }
+  constructor(private projectService: ProjectService, private managerService: ManagerService) { }
 
   displayedColumns: string[] = ['projectId', 'projectName', 'projectLocation', 'managerId', 'projectCost', 'actions'];
   dataSource = new MatTableDataSource<Project>();
@@ -30,8 +33,18 @@ export class ProjectComponent implements OnInit {
     this.getProjects();
   }
 
+  public getManagers(): void {
+    this.managerService.getManagers().subscribe(
+      (response: Manager[]) => {
+        this.managers = response;
+      },
+      (error: HttpErrorResponse) => {
+        alert(error.message);
+      }
+    );
+  }
+
   public getProjects(): void {
-    console.log("a");
     this.projectService.getProjects().subscribe(
       (response: Project[]) => {
         response.forEach((element) => {
@@ -143,9 +156,11 @@ export class ProjectComponent implements OnInit {
     button.style.display = 'none';
     button.setAttribute('data-toggle', 'modal');
     if (mode === 'add') {
+      this.getManagers();
       button.setAttribute('data-target', '#addProjectModal');
     }
     if (mode === 'edit') {
+      this.getManagers();
       this.editProject = project;
       button.setAttribute('data-target', '#updateProjectModal');
     }

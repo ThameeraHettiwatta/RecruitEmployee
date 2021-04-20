@@ -118,8 +118,12 @@
                     </div>
                     <div class="form-group">
                         <label for="managerId">Manager Id</label>
-                        <input type="number" ngModel name="managerId" class="form-control" id="managerId"
-                            placeholder="Manager Id" required>
+                        <select class="browser-default custom-select" ngModel name="managerId">
+                            <option>Manager Id</option>
+                            <option *ngFor="let manager of managers" [value]="manager.managerId">
+                                {{manager.managerId}}
+                            </option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="add-project-form" class="btn btn-secondary"
@@ -158,9 +162,12 @@
                             class="form-control" id="projectLocation" placeholder="Project Location">
                     </div>
                     <div class="form-group">
-                        <label for="managerId">Manager Id</label>
-                        <input type="number" ngModel="{{editProject?.managerId}}" name="managerId" class="form-control"
-                            id="managerId" placeholder="Manager Id">
+                        <select class="browser-default custom-select" ngModel="{{editProject?.managerId}}"
+                            name="managerId">
+                            <option *ngFor="let manager of managers" [value]="manager.managerId">
+                                {{manager.managerId}}
+                            </option>
+                        </select>
                     </div>
                     <div class="modal-footer">
                         <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>

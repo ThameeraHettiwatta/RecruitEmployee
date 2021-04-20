@@ -1,10 +1,12 @@
 package com.example.RecruitEmployee.employee;
 
 import com.example.RecruitEmployee.dto.EmployeeDto;
+import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
+
 import java.util.ArrayList;
 import java.util.List;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -111,5 +115,15 @@ class EmployeeControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$[0].empId", Matchers.equalTo(1)));
+    }
+
+    @Test
+    void testGetEmployeeByIdWithInvalidKey() throws Exception{
+        ApiRequestException apiRequestException = new ApiRequestException("User not found with empId:"+144);
+        Mockito.when(employeeService.getEmployeeById(144)).thenThrow(apiRequestException);
+        mockMvc.perform(get("/employees/144")
+                .accept(MediaType.APPLICATION_JSON))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isBadRequest());
     }
 }

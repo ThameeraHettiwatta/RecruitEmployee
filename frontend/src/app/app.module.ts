@@ -16,6 +16,7 @@ import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatRadioModule } from '@angular/material/radio';
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -23,25 +24,26 @@ import { MatRadioModule } from '@angular/material/radio';
     AppComponent,
     routingComponents
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatListModule,
-    MatButtonModule,
-    MatIconModule,
-    AppRoutingModule,
-    MatTableModule,
-    MatPaginatorModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatRadioModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatSliderModule,
+        MatToolbarModule,
+        MatSidenavModule,
+        MatListModule,
+        MatButtonModule,
+        MatIconModule,
+        AppRoutingModule,
+        MatTableModule,
+        MatPaginatorModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatRadioModule,
+        MatSelectModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
