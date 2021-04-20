@@ -45,13 +45,13 @@ public class ManagerController {
     }
 
     @PostMapping(path = "addEmployee")
-    public ResponseEntity<Integer> addManager(@NonNull @RequestBody ManagerDto manager){
+    public ResponseEntity<Integer> addManager(@NonNull @RequestBody Manager manager){
         int added = managerService.addManager(manager);
         return new ResponseEntity<>(added, HttpStatus.CREATED);
     }
 
     @PutMapping(path = "updateEmployee")
-    public ResponseEntity<Integer> updateManager(@NonNull @RequestBody ManagerDto manager) {
+    public ResponseEntity<Integer> updateManager(@NonNull @RequestBody Manager manager) {
         int updated = managerService.updateManager(manager);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

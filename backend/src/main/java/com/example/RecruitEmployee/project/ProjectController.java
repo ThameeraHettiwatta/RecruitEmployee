@@ -46,13 +46,13 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<Integer> addProject(@NonNull @RequestBody ProjectDto project){
+    public ResponseEntity<Integer> addProject(@NonNull @RequestBody Project project){
         int added = projectService.addProject(project);
         return new ResponseEntity<>(added, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<Integer> updateProject(@NonNull @RequestBody ProjectDto project){
+    public ResponseEntity<Integer> updateProject(@NonNull @RequestBody Project project){
         int updated = projectService.updateProject(project);
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }

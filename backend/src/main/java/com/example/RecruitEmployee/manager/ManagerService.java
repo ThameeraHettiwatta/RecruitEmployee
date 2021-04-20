@@ -6,6 +6,8 @@ import com.example.RecruitEmployee.employee.Employee;
 import com.example.RecruitEmployee.exception.ApiRequestException;
 import com.example.RecruitEmployee.mapper.EmployeeMapper;
 import com.example.RecruitEmployee.mapper.ManagerMapper;
+import com.example.RecruitEmployee.mapper.ProjectMapper;
+import com.example.RecruitEmployee.project.Project;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,12 +21,14 @@ import java.util.stream.Collectors;
 public class ManagerService {
     private final ManagerMapper managerMapper;
     private final EmployeeMapper employeeMapper;
+    private final ProjectMapper projectMapper;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ManagerService(@Qualifier("ManagerMapper") ManagerMapper managerMapper, @Qualifier("EmployeeMapper") EmployeeMapper employeeMapper, ModelMapper modelMapper) {
+    public ManagerService(@Qualifier("ManagerMapper") ManagerMapper managerMapper, @Qualifier("EmployeeMapper") EmployeeMapper employeeMapper, ProjectMapper projectMapper, ModelMapper modelMapper) {
         this.managerMapper = managerMapper;
         this.employeeMapper = employeeMapper;
+        this.projectMapper = projectMapper;
         this.modelMapper = modelMapper;
     }
 
@@ -50,28 +54,26 @@ public class ManagerService {
         return convertToDto(managerMapper.getManagerById(managerId).orElseThrow(() -> new ApiRequestException("Manager not found with managerId:" + managerId)));
     }
 
-    public int addManager(ManagerDto manager) {
+    public int addManager(Manager manager) {
         Optional<Manager> managerByEmail = managerMapper.getManagerByEmail(manager.getManagerEmail());
         if (managerByEmail.isPresent()) throw new ApiRequestException("Manager already exist");
-        return managerMapper.addManager(convertToEntity(manager));
+        return managerMapper.addManager(manager);
     }
 
-    public int updateManager(ManagerDto manager) {
+    public int updateManager(Manager manager) {
         managerMapper.getManagerById(manager.getManagerId()).orElseThrow(() -> new ApiRequestException("Manager not found with managerId:" + manager.getManagerId()));
-        return managerMapper.updateManager(convertToEntity(manager));
+        return managerMapper.updateManager(manager);
     }
 
     public int deleteManager(Integer managerId) {
         managerMapper.getManagerById(managerId).orElseThrow(() -> new ApiRequestException("Manager not found with managerId:" +managerId));
+        List<Project> projects = projectMapper.getProjectByManagerId(managerId);
+        if(!projects.isEmpty()) throw new ApiRequestException("Cannot delete Manager, since its linked to Projects");
         return managerMapper.deleteManager(managerId);
     }
 
     private ManagerDto convertToDto(Manager manager){
         return modelMapper.map(manager, ManagerDto.class);
-    }
-
-    private Manager convertToEntity(ManagerDto managerDto){
-        return modelMapper.map(managerDto, Manager.class);
     }
 
     private EmployeeDto convertToDto(Employee employee){

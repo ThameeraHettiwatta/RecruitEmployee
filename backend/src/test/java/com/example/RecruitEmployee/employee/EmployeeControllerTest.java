@@ -34,14 +34,6 @@ class EmployeeControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-//    @InjectMocks
-//    private EmployeeController employeeController;
-//
-//    @Before
-//    public void setUp() throws Exception{
-//        mockMvc = MockMvcBuilders.standaloneSetup(employeeController).build();
-//    }
-
     @Test
     void getAllEmployee() throws Exception{
         List<EmployeeDto> employees = new ArrayList<>();
@@ -79,23 +71,19 @@ class EmployeeControllerTest {
     @Test
     void addEmployee() throws Exception{
         Employee employee1 = new Employee(2, "emp1", 4852L, 8, "emp1@gmail.com");
-//        Mockito.when(employeeService.addEmployee(employee1)).thenReturn(1);
         mockMvc.perform(post("/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee1)))
                 .andExpect(status().isCreated());
-//                .andExpect(jsonPath("$", Matchers.equalTo(1)));
     }
 
     @Test
     void updateEmployee() throws Exception{
         Employee employee1 = new Employee(2, "emp1", 4852L, 8, "emp1@gmail.com");
-//        Mockito.when(employeeService.addEmployee(employee1)).thenReturn(1);
         mockMvc.perform(put("/employees")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(employee1)))
                 .andExpect(status().isOk());
-//                .andExpect(jsonPath("$", Matchers.equalTo(1)));
     }
 
     @Test
