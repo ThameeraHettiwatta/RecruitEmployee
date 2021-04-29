@@ -61,16 +61,16 @@ spec:
             secretKeyRef:
               name: mysql-secret
               key: database-name
-        # - name: MYSQL_USER
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: mysql-secret
-        #       key: user-username
-        # - name: MYSQL_PASSWORD
-        #   valueFrom:
-        #     secretKeyRef:
-        #       name: mysql-secret
-        #       key: user-password
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user-username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user-password
         ports:
         - containerPort: 3306        # The port that the container exposes       
           name: mysql
