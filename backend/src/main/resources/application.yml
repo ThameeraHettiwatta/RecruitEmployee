@@ -1,9 +1,12 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/recruit_employee
-    username: root
-    password: admin123
+    # url: jdbc:mysql://localhost:3306/recruit_employee
+    # username: root
+    # password: admin123
+    url: jdbc:mysql://mysql-svc:3306/${SPRING_DATASOURCE_NAME}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
 pagehelper:
   helperDialect: mysql

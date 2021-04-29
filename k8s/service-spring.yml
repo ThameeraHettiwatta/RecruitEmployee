@@ -1,0 +1,15 @@
+apiVersion: v1                # API version
+kind: Service                 # Type of the kubernetes resource
+metadata:                     
+  name: spring-boot-svc    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: spring-boot-svc
+spec:                         
+  type: NodePort              # The service will be exposed by opening a Port on each node and proxying it. 
+  selector:
+    app: spring-boot-svc   # The service exposes Pods with label `app=polling-app-server`
+  ports:                      # Forward incoming connections on port 8080 to the target port 8080
+  - name: http
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
