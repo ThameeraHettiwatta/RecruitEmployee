@@ -7,9 +7,10 @@ metadata:
 spec:                         
   type: NodePort              # The service will be exposed by opening a Port on each node and proxying it. 
   selector:
-    app: spring-boot-svc   # The service exposes Pods with label `app=polling-app-server`
+    app: spring-boot-mysql   # The service exposes Pods with label `app=polling-app-server`
   ports:                      # Forward incoming connections on port 8080 to the target port 8080
   - name: http
+    nodePort: 31498 
     port: 8080
     targetPort: 8080
     protocol: TCP
