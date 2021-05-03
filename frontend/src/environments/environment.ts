@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // apiBaseUrl: "http://localhost:8080"
-  apiBaseUrl: "http://192.168.49.2:31498"
+  apiBaseUrl: "http://spring-boot-svc:31498"
 };
 
 /*

@@ -16,7 +16,7 @@ spec:
     spec:                     # Spec for the containers that will be run in the Pods
       containers:
       - name: springboot-k8s-recruitemployee
-        image: springboot-k8s-recruitemployee:1.0
+        image: springboot-k8s-recruitemployee:1.1
         imagePullPolicy: IfNotPresent
         ports:
           - name: http
