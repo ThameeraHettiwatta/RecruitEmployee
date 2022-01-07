@@ -1,0 +1,205 @@
+<div class="container" id="main-container">
+    <!-- Search Project -->
+    <div>
+        <mat-radio-group aria-label="Select an option">
+            <h3>Search</h3>
+            <mat-radio-button value="all" (click)="toggle('all')" checked>All Projects</mat-radio-button>
+            <mat-radio-button value="projectId" (click)="toggle('projectId')">Project Id</mat-radio-button>
+            <mat-radio-button value="managerId" (click)="toggle('managerId')">Manager Id</mat-radio-button>
+        </mat-radio-group>
+        <div *ngIf="!projectIdSearchDisabled || !managerIdSearchDisabled" id="searchProjectModal">
+            <form #searchForm="ngForm" (ngSubmit)="onSearchById(searchForm.value)">
+                <mat-form-field>
+                    <div *ngIf="!projectIdSearchDisabled">
+                        <input matInput ngModel placeholder="Search by Project Id" class="form-control" name="projectId"
+                            id="projectId" type="number">
+                    </div>
+                    <div *ngIf="!managerIdSearchDisabled">
+                        <input matInput ngModel placeholder="Search by Manager Id" class="form-control" name="managerId"
+                            id="managerId" type="number">
+                    </div>
+                    <button mat-button matSuffix mat-stroked-button aria-label="search" type="submit">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+
+    <!-- Create Project -->
+    <section>
+        <div class="example-label"></div>
+        <div class="example-button-row">
+            <button mat-stroked-button color="primary" (click)="onOpenModal(null, 'add')">Create Project</button>
+        </div>
+    </section>
+
+    <!-- Table of Projects -->
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="projectId">
+                <th mat-header-cell *matHeaderCellDef> Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectName">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectName}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectLocation">
+                <th mat-header-cell *matHeaderCellDef> Project Location </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectLocation}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="managerId">
+                <th mat-header-cell *matHeaderCellDef> Manager Id </th>
+                <td mat-cell *matCellDef="let element"> {{element.managerId}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="projectCost">
+                <th mat-header-cell *matHeaderCellDef> Project Cost </th>
+                <td mat-cell *matCellDef="let element"> {{element.projectCost | currency:'USD':'symbol-narrow'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <button mat-icon-button matTooltip="Click to Edit" (click)="onOpenModal(row, 'edit')"
+                        class="iconbutton" color="primary">
+                        <mat-icon aria-label="Edit">edit</mat-icon>
+                    </button>
+                    <button mat-icon-button matTooltip="Click to Delete" (click)="onOpenModal(row, 'delete')"
+                        class="iconbutton" color="warn">
+                        <mat-icon aria-label="Delete">delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+
+    <!-- Notification for no projects -->
+    <div *ngIf="dataSource.data?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+        <div class="alert alert-info" role="alert">
+            <h4 class="alert-heading">NO PROJECTS!</h4>
+            <p>No Projects were found.</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- Add Project Modal -->
+<div class="modal fade" id="addProjectModal" tabindex="-1" role="dialog" aria-labelledby="addProjectModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addProjectModalLabel">Create Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #addForm="ngForm" (ngSubmit)="onAddProject(addForm)">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" ngModel name="projectName" class="form-control" id="projectName"
+                            placeholder="Project Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" ngModel name="projectLocation" class="form-control" id="projectLocation"
+                            placeholder="Project Location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="managerId">Manager Id</label>
+                        <select class="browser-default custom-select" ngModel name="managerId">
+                            <option>Manager Id</option>
+                            <option *ngFor="let manager of managers" [value]="manager.managerId">
+                                {{manager.managerId}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="add-project-form" class="btn btn-secondary"
+                            data-dismiss="modal">Close</button>
+                        <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Project Modal -->
+<div class="modal fade" id="updateProjectModal" tabindex="-1" role="dialog" aria-labelledby="projectEditModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProjectModalLabel">Edit Project {{editProject?.projectName}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #editForm="ngForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" ngModel="{{editProject?.projectName}}" name="projectName"
+                            class="form-control" id="projectName" aria-describedby="emailHelp" placeholder="Name">
+                    </div>
+                    <input type="hidden" ngModel="{{editProject?.projectId}}" name="projectId" class="form-control"
+                        id="projectId" placeholder="Id">
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" ngModel="{{editProject?.projectLocation}}" name="projectLocation"
+                            class="form-control" id="projectLocation" placeholder="Project Location">
+                    </div>
+                    <div class="form-group">
+                        <select class="browser-default custom-select" ngModel="{{editProject?.managerId}}"
+                            name="managerId">
+                            <option *ngFor="let manager of managers" [value]="manager.managerId">
+                                {{manager.managerId}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                        <button (click)="onUpdateEmloyee(editForm.value)" data-dismiss="modal"
+                            class="btn btn-primary">Save
+                            changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Project Modal -->
+<div class="modal fade" id="deleteProjectModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModelLabel">Delete Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete project {{deleteProject?.projectName}}?</p>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button (click)="onDeleteProject(deleteProject?.projectId)" class="btn btn-danger"
+                        data-dismiss="modal">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

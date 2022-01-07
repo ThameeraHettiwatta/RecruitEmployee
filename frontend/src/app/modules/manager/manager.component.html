@@ -1,0 +1,189 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+<div ng-app ng-controller="form">
+    <div class="container" id="main-container">
+        <!-- Search Manager -->
+        <div>
+            <mat-radio-group aria-label="Select an option">
+                <h3>Search</h3>
+                <mat-radio-button value="all" (click)="toggle('all')" checked>All Managers</mat-radio-button>
+                <mat-radio-button value="managerId" (click)="toggle('managerId')">Manager Id</mat-radio-button>
+            </mat-radio-group>
+            <div *ngIf="!managerIdSearchDisabled" id="searchManagerByIdModal">
+                <form #searchForm="ngForm" (ngSubmit)="onSearchById(searchForm.value)">
+                    <mat-form-field>
+                        <input matInput ngModel placeholder="Search by Manager Id" class="form-control" name="managerId"
+                            id="managerId" type="number">
+                        <button mat-button matSuffix mat-stroked-button aria-label="search" type="submit">
+                            <mat-icon>search</mat-icon>
+                        </button>
+                    </mat-form-field>
+                </form>
+            </div>
+        </div>
+
+        <!-- Create Manager -->
+        <section>
+            <div class="example-label"></div>
+            <div class="example-button-row">
+                <button mat-stroked-button color="primary" (click)="onOpenModal(null, 'add')">Create Manager</button>
+            </div>
+        </section>
+
+        <!-- Table of Managers -->
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource">
+                <ng-container matColumnDef="managerId">
+                    <th mat-header-cell *matHeaderCellDef> Id </th>
+                    <td mat-cell *matCellDef="let element"> {{element.managerId}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="managerName">
+                    <th mat-header-cell *matHeaderCellDef> Name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.managerName}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="managerEmail">
+                    <th mat-header-cell *matHeaderCellDef> Email </th>
+                    <td mat-cell *matCellDef="let element"> {{element.managerEmail}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="managerContactNumber">
+                    <th mat-header-cell *matHeaderCellDef> Contact Number </th>
+                    <td mat-cell *matCellDef="let element"> {{element.managerContactNumber}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <button mat-icon-button matTooltip="Click to Edit" (click)="onOpenModal(row, 'edit')"
+                            class="iconbutton" color="primary">
+                            <mat-icon aria-label="Edit">edit</mat-icon>
+                        </button>
+                        <button mat-icon-button matTooltip="Click to Delete" (click)="onOpenModal(row, 'delete')"
+                            class="iconbutton" color="warn">
+                            <mat-icon aria-label="Delete">delete</mat-icon>
+                        </button>
+                    </mat-cell>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+        </div>
+        <!-- Notification for no managers -->
+        <div *ngIf="dataSource.data?.length == 0" class="col-lg-12 col-md-12 col-xl-12">
+            <div class="alert alert-info" role="alert">
+                <h4 class="alert-heading">NO MANAGERS!</h4>
+                <p>No Managers were found.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Manager Modal -->
+    <div class="modal fade" id="addManagerModal" tabindex="-1" role="dialog" aria-labelledby="addManagerModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addManagerModalLabel">Create Manager</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #addForm="ngForm" (ngSubmit)="onAddManager(addForm)">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" ngModel name="managerName" class="form-control" id="manager_name"
+                                placeholder="Manager Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" ngModel name="managerEmail" class="form-control" id="manager_email"
+                                placeholder="Manager Email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact">Contact Number</label>
+                            <input type="text" ngModel name="managerContactNumber" class="form-control"
+                                id="manager_contact_number" placeholder="Manager Contact Number" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="add-manager-form" class="btn btn-secondary"
+                                data-dismiss="modal">Close</button>
+                            <button [disabled]="addForm.invalid" type="submit" class="btn btn-primary">Save
+                                changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Manager Modal -->
+    <div class="modal fade" id="updateManagerModal" tabindex="-1" role="dialog" aria-labelledby="employeeEditModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateManagerModalLabel">Edit Manager {{editManager?.managerName}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #editForm="ngForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" ngModel="{{editManager?.managerName}}" name="managerName"
+                                class="form-control" id="managerName" aria-describedby="emailHelp" placeholder="Name">
+                        </div>
+                        <input type="hidden" ngModel="{{editManager?.managerId}}" name="managerId" class="form-control"
+                            id="update_manager_id" placeholder="Id">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" ngModel="{{editManager?.managerEmail}}" name="managerEmail"
+                                class="form-control" id="update_manager_email" placeholder="Manager Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact">Contact Number</label>
+                            <input type="text" ngModel="{{editManager?.managerContactNumber}}"
+                                name="managerContactNumber" class="form-control" id="update_manager_contact_number"
+                                placeholder="Manager Contact Number">
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="" data-dismiss="modal" class="btn btn-secondary">Close</button>
+                            <button (click)="onUpdateManager(editForm.value)" data-dismiss="modal"
+                                class="btn btn-primary">Save
+                                changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Manager Modal -->
+    <div class="modal fade" id="deleteManagerModal" tabindex="-1" role="dialog" aria-labelledby="deleteModelLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModelLabel">Delete Manager</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete employee {{deleteManager?.managerName}}?</p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <button (click)="onDeleteManager(deleteManager?.managerId)" class="btn btn-danger"
+                            data-dismiss="modal">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

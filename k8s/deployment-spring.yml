@@ -1,0 +1,48 @@
+apiVersion: apps/v1           # API version
+kind: Deployment              # Type of kubernetes resource
+metadata:
+  name: spring-boot-deployment    # Name of the kubernetes resource
+  labels:                     # Labels that will be applied to this resource
+    app: spring-boot-mysql
+spec:
+  replicas: 1                 # No. of replicas/pods to run in this deployment
+  selector:
+    matchLabels:              # The deployment applies to any pods mayching the specified labels
+      app: spring-boot-mysql
+  template:                   # Template for creating the pods in this deployment
+    metadata:
+      labels:                 # Labels that will be applied to each Pod in this deployment
+        app: spring-boot-mysql
+    spec:                     # Spec for the containers that will be run in the Pods
+      containers:
+      - name: springboot-k8s-recruitemployee
+        image: springboot-k8s-recruitemployee:1.1
+        imagePullPolicy: IfNotPresent
+        ports:
+          - name: http
+            containerPort: 8080 # The port that the container exposes
+        resources:
+          limits:
+            cpu: 0.2
+            memory: "200Mi"
+        env:                  # Environment variables supplied to the Pod
+        - name: SPRING_DATASOURCE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: database-name        
+        - name: SPRING_DATASOURCE_USERNAME # Name of the environment variable
+          valueFrom:          # Get the value of environment variable from kubernetes secrets
+            secretKeyRef:
+              name: mysql-secret
+              key: user-username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: user-password
+        # - name: SPRING_DATASOURCE_URL
+        #   valueFrom:
+        #     secretKeyRef:
+        #       name: mysql-db-url
+        #       key: url
